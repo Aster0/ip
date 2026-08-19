@@ -1,11 +1,13 @@
+import java.util.Arrays;
+
 public class UnknownCommand implements Command {
 
 
     @Override
     public void onRun(Carl carl, String[] args) {
 
-        String itemName = args[0];
-        carl.addItemToList(new Item(itemName));
-        System.out.println("added: " + itemName);
+        String name = String.join(" ", Arrays.copyOfRange(args, 0, args.length));
+        carl.addTaskToList(new Task(new Item(name)));
+
     }
 }

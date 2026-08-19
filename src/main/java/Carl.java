@@ -3,7 +3,8 @@ import java.util.*;
 public class Carl {
 
 
-    public final String BOT_NAME = "CARL";
+    private final String BOT_NAME = "CARL";
+    private String separator = "____________________________________________________________";
     private boolean isRunning = true;
 
     private Map<String, Command> commands = new HashMap<>();
@@ -20,6 +21,9 @@ public class Carl {
         commands.put("list", new ListCommand());
         commands.put("mark", new MarkCommand());
         commands.put("unmark", new UnmarkCommand());
+        commands.put("deadline", new DeadlineCommand());
+        commands.put("event", new EventCommand());
+        commands.put("todo", new TodoCommand());
     }
 
     private void start() {
@@ -31,7 +35,7 @@ public class Carl {
                 + "| |___ / ___ \\|  _ <| |___ \n"
                 + " \\____/_/   \\_\\_| \\_\\____|\n";
 
-        String separator = "____________________________________________________________";
+
         System.out.println(separator);
         System.out.println(banner);
 
@@ -42,10 +46,10 @@ public class Carl {
 
 
             while (isRunning) {
-                String input = scanner.nextLine().trim().toLowerCase();
+                String input = scanner.nextLine().trim();
 
                 String[] args = input.split(" ");
-                Command command = commands.getOrDefault(args[0], new UnknownCommand());
+                Command command = commands.getOrDefault(args[0].toLowerCase(), new UnknownCommand());
                 command.onRun(this, args);
 
             }
@@ -58,6 +62,15 @@ public class Carl {
 
     public void addItemToList(Item item) {
         tasks.add(new Task(item));
+    }
+
+    public void addTaskToList(Task task) {
+        tasks.add(task);
+
+        System.out.println(separator);
+        System.out.println("Okay! I have added this task: \n  " + task + "\nNow you have " + tasks.size() + " tasks in the list.");
+        System.out.println(separator);
+
     }
 
     public void listItems() {
