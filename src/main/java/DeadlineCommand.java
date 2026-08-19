@@ -10,27 +10,34 @@ public class DeadlineCommand implements Command {
             throw new CarlEmptyCommandException("deadline <project_name> /by <date>");
         }
 
-        String from = "";
-        int fromIndex = -1;
+        int byIndex = getByIndex(args);
+        String name = String.join(" ", Arrays.copyOfRange(args, 1, byIndex)).trim();
+        String by = String.join(" ", Arrays.copyOfRange(args, byIndex + 1, args.length)).trim();
+
+        validateNonEmpty(name, by);
+        carl.addTaskToList(new Deadline(new Item(name), by));
+    }
+
+    private void validateNonEmpty(String name, String by) throws CarlException {
+        if (by.isEmpty() || name.isEmpty()) {
+            throw new CarlEmptyCommandException("deadline <project_name> /by <date>");
+        }
+
+    }
+
+    private int getByIndex(String[] args) {
+        int byIndex = -1;
 
         for (int i = 0; i < args.length; i++) {
-
             String str = args[i];
 
             if (str.equals("/by")) {
-                from = String.join(" ",
-                        Arrays.copyOfRange(args, i + 1, args.length));
-                fromIndex = i;
+                byIndex = i;
             }
         }
-
-        if (fromIndex == -1) {
-            fromIndex = args.length;
+        if (byIndex == -1) {
+            byIndex = args.length;
         }
-
-        String name = String.join(" ", Arrays.copyOfRange(args, 1, fromIndex));
-
-        carl.addTaskToList(new Deadline(new Item(name), from));
-
+        return byIndex;
     }
 }

@@ -2,69 +2,49 @@ import java.util.Arrays;
 
 public class EventCommand implements Command {
 
+    private static final String USAGE = "event <project_name> /from <date> /to <date>";
 
     @Override
     public void onRun(Carl carl, String[] args, String raw) throws CarlException {
         if (args.length < 2 || !raw.contains("/from") || !raw.contains("/to")) {
-            throw new CarlEmptyCommandException("event <project_name> /from <date> /to <date>");
+            throw new CarlEmptyCommandException(USAGE);
         }
 
-        // not sure if we need to make it so its dynamic where /to can come first than /from or what but i made both ways work
-        int fromIndex = -1;
-        int toIndex = -1;
+        int fromIndex = getIndexOf(args, "/from");
+        int toIndex = getIndexOf(args, "/to");
 
-        for (int i = 0; i < args.length; i++) {
-            if (args[i].equals("/from")) {
-                fromIndex = i;
-            } else if (args[i].equals("/to")) {
-                toIndex = i;
-            }
+        if (fromIndex > toIndex) {
+            throw new CarlEmptyCommandException(USAGE);
         }
 
-        String from = "";
-        String to = "";
+        String name = String.join(" ", Arrays.copyOfRange(args, 1, fromIndex)).trim();
+        String from = String.join(" ", Arrays.copyOfRange(args, fromIndex + 1, toIndex)).trim();
+        String to = String.join(" ", Arrays.copyOfRange(args, toIndex + 1, args.length)).trim();
 
-        if (fromIndex != -1) {
-            int end = args.length;
-
-            if (toIndex != -1 && toIndex > fromIndex) {
-                end = toIndex;
-            }
-
-            from = String.join(" ",
-                    Arrays.copyOfRange(args, fromIndex + 1, end)
-            );
-        }
-
-        if (toIndex != -1) {
-            int end = args.length;
-
-            if (fromIndex != -1 && fromIndex > toIndex) {
-                end = fromIndex;
-            }
-
-            to = String.join(" ",
-                    Arrays.copyOfRange(args, toIndex + 1, end)
-            );
-        }
-
-        int nameEnd = args.length;
-
-        for (int i = 1; i < args.length; i++) {
-            if (args[i].equals("/from") ||
-                    args[i].equals("/to") ||
-                    args[i].equals("/by")) {
-                nameEnd = i;
-                break;
-            }
-        }
-
-        String name = String.join(" ",
-                Arrays.copyOfRange(args, 1, nameEnd));
+        validateNonEmpty(name, from, to);
 
         carl.addTaskToList(new Event(new Item(name), from, to));
+    }
 
+    private int getIndexOf(String[] args, String word) {
+        int byIndex = -1;
 
+        for (int i = 0; i < args.length; i++) {
+            String str = args[i];
 
+            if (str.equals(word)) {
+                byIndex = i;
+            }
+        }
+        if (byIndex == -1) {
+            byIndex = args.length;
+        }
+        return byIndex;
+    }
+
+    private void validateNonEmpty(String name, String from, String to) throws CarlException {
+        if (name.isEmpty() || from.isEmpty() || to.isEmpty()) {
+            throw new CarlEmptyCommandException(USAGE);
+        }
     }
 }

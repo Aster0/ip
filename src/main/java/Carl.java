@@ -24,6 +24,7 @@ public class Carl {
         commands.put("deadline", new DeadlineCommand());
         commands.put("event", new EventCommand());
         commands.put("todo", new TodoCommand());
+        commands.put("delete", new DeleteCommand());
     }
 
     private void start() {
@@ -82,9 +83,13 @@ public class Carl {
         tasks.add(task);
 
         System.out.println(separator);
-        System.out.println("Okay! I have added this task: \n  " + task + "\nNow you have " + tasks.size() + " tasks in the list.");
+        System.out.println("Okay! I have added this task: \n  " + task + "\n" + tasksLeft());
         System.out.println(separator);
 
+    }
+
+    private String tasksLeft() {
+        return "\nNow you have " + tasks.size() + " tasks in the list.";
     }
 
     public void listItems() {
@@ -101,6 +106,23 @@ public class Carl {
 
             System.out.println("Successfully marked this task as done! \n  " + task);
         }
+
+    }
+
+    public void deleteTask(int index) throws CarlException {
+
+        if (index >= tasks.size()) {
+            throw new CarlUnknownTaskException();
+        }
+
+        Task task = tasks.get(index);
+
+        if (task == null) {
+            throw new CarlUnknownTaskException();
+        }
+
+        tasks.remove(index);
+        System.out.println("Successfully removed this task! \n  " + task + "\n" + tasksLeft());
 
     }
 
