@@ -7,7 +7,7 @@ public class Carl {
     private boolean isRunning = true;
 
     private Map<String, Command> commands = new HashMap<>();
-    private List<Item> items = new ArrayList<>(100);
+    private List<Task> tasks = new ArrayList<>(100);
 
     public static void main(String[] args) {
         Carl bot = new Carl();
@@ -18,6 +18,8 @@ public class Carl {
     private void initCommands() {
         commands.put("bye", new ByeCommand());
         commands.put("list", new ListCommand());
+        commands.put("mark", new MarkCommand());
+        commands.put("unmark", new UnmarkCommand());
     }
 
     private void start() {
@@ -42,8 +44,9 @@ public class Carl {
             while (isRunning) {
                 String input = scanner.nextLine().trim().toLowerCase();
 
-                Command command = commands.getOrDefault(input, new UnknownCommand());
-                command.onRun(this, input.split(" "));
+                String[] args = input.split(" ");
+                Command command = commands.getOrDefault(args[0], new UnknownCommand());
+                command.onRun(this, args);
 
             }
         }
@@ -54,12 +57,32 @@ public class Carl {
     }
 
     public void addItemToList(Item item) {
-        items.add(item);
+        tasks.add(new Task(item));
     }
 
     public void listItems() {
-        for (int i = 0; i < items.size(); i++) {
-            System.out.println((i + 1) + ". " + items.get(i));
+        for (int i = 0; i < tasks.size(); i++) {
+            System.out.println((i + 1) + ". " + tasks.get(i));
+        }
+    }
+
+    public void completeTask(int index) {
+
+        Task task = tasks.get(index);
+        if (task != null) {
+            task.markAsDone();
+
+            System.out.println("Successfully marked this task as done! \n  " + task);
+        }
+
+    }
+
+    public void revertTask(int index) {
+        Task task = tasks.get(index);
+        if (task != null) {
+            task.unMarkAsDone();
+
+            System.out.println("Successfully unmarked this task as not done! \n  " + task);
         }
     }
 
