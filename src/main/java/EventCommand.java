@@ -4,8 +4,12 @@ public class EventCommand implements Command {
 
 
     @Override
-    public void onRun(Carl carl, String[] args) {
+    public void onRun(Carl carl, String[] args, String raw) throws CarlException {
+        if (args.length < 2 || !raw.contains("/from") || !raw.contains("/to")) {
+            throw new CarlEmptyCommandException("event <project_name> /from <date> /to <date>");
+        }
 
+        // not sure if we need to make it so its dynamic where /to can come first than /from or what but i made both ways work
         int fromIndex = -1;
         int toIndex = -1;
 
@@ -57,8 +61,6 @@ public class EventCommand implements Command {
 
         String name = String.join(" ",
                 Arrays.copyOfRange(args, 1, nameEnd));
-
-
 
         carl.addTaskToList(new Event(new Item(name), from, to));
 

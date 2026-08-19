@@ -48,12 +48,26 @@ public class Carl {
             while (isRunning) {
                 String input = scanner.nextLine().trim();
 
-                String[] args = input.split(" ");
-                Command command = commands.getOrDefault(args[0].toLowerCase(), new UnknownCommand());
-                command.onRun(this, args);
+                try {
+                    parseCommands(input);
+                }
+                catch(CarlException e) {
+                    System.out.println(e.getMessage());
+                }
 
             }
         }
+    }
+
+    private void parseCommands(String input) throws CarlException{
+        String[] args = input.split(" ");
+        Command command = commands.get(args[0].toLowerCase());
+
+        if (command == null) {
+            throw new CarlUnknownCommandException();
+        }
+
+        command.onRun(this, args, input);
     }
 
     public void stop() {
