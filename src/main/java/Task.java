@@ -1,27 +1,34 @@
 public class Task {
     protected Item item;
-    protected boolean isDone;
+    protected TaskStatus status;
 
     public Task(Item item) {
         this.item = item;
-        this.isDone = false;
+        this.status = TaskStatus.NOT_DONE;
     }
 
-    private String getStatusIcon() {
-        return (isDone ? "X" : " "); // mark done task with X
-    }
 
     @Override
     public String toString() {
-        return String.format("[%s] %s", getStatusIcon(), this.item);
+        return String.format("%s %s", status, this.item);
     }
 
 
-    public void markAsDone() {
-        this.isDone = true;
+    public boolean markAsDone() {
+        if (this.status == TaskStatus.DONE) {
+            return false;
+        }
+
+        this.status = TaskStatus.DONE;
+        return true;
     }
 
-    public void unMarkAsDone() {
-        this.isDone = false;
+    public boolean unMarkAsDone() {
+        if (this.status == TaskStatus.NOT_DONE) {
+            return false;
+        }
+
+        this.status = TaskStatus.NOT_DONE;
+        return true;
     }
 }

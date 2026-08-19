@@ -100,12 +100,21 @@ public class Carl {
 
     public void completeTask(int index) {
 
-        Task task = tasks.get(index);
-        if (task != null) {
-            task.markAsDone();
-
-            System.out.println("Successfully marked this task as done! \n  " + task);
+        if (index < 0 || index >= tasks.size()) {
+            System.out.println("Invalid task number! Check \"list\"!");
+            return;
         }
+
+        Task task = tasks.get(index);
+
+        if (task.markAsDone()) {
+            System.out.println("Successfully marked this task as done! \n  " + task);
+            return;
+        }
+
+        System.out.println("Task is already marked as done, cannot be marked again!");
+
+
 
     }
 
@@ -127,12 +136,21 @@ public class Carl {
     }
 
     public void revertTask(int index) {
-        Task task = tasks.get(index);
-        if (task != null) {
-            task.unMarkAsDone();
 
-            System.out.println("Successfully unmarked this task as not done! \n  " + task);
+        if (index < 0 || index >= tasks.size()) {
+            System.out.println("Invalid task number! Check \"list\"!");
+            return;
         }
+        Task task = tasks.get(index);
+
+        if (task.unMarkAsDone()) {
+            System.out.println("Successfully unmarked this task as not done! \n  " + task);
+            return;
+        }
+        System.out.println("Task is already not done, cannot be unmarked!");
+
+
+
     }
 
 
