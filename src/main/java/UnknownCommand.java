@@ -4,6 +4,8 @@ public class UnknownCommand implements Command {
     @Override
     public void onRun(Carl carl, String[] args) {
 
-        System.out.println(args[0]); // jsut repeat whatever user said
+        String itemName = args[0];
+        carl.addItemToList(new Item(itemName));
+        System.out.println("added: " + itemName);
     }
 }

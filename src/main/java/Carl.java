@@ -1,6 +1,4 @@
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Carl {
 
@@ -9,6 +7,7 @@ public class Carl {
     private boolean isRunning = true;
 
     private Map<String, Command> commands = new HashMap<>();
+    private List<Item> items = new ArrayList<>(100);
 
     public static void main(String[] args) {
         Carl bot = new Carl();
@@ -18,10 +17,10 @@ public class Carl {
 
     private void initCommands() {
         commands.put("bye", new ByeCommand());
+        commands.put("list", new ListCommand());
     }
 
     private void start() {
-        Scanner scanner = new Scanner(System.in);
         initCommands();
 
         String banner = "  ____    _    ____  _     \n"
@@ -37,17 +36,31 @@ public class Carl {
         System.out.println("Hello there!  I am " + BOT_NAME + ".");
         System.out.println("What do you need help in?");
 
-        while (isRunning) {
-            String input = scanner.nextLine().trim().toLowerCase();
+        try (Scanner scanner = new Scanner(System.in)) { // added to make sure scanner closes (Closeable interface) after try block
 
-            Command command = commands.getOrDefault(input, new UnknownCommand());
-            command.onRun(this, input.split(" "));
 
+            while (isRunning) {
+                String input = scanner.nextLine().trim().toLowerCase();
+
+                Command command = commands.getOrDefault(input, new UnknownCommand());
+                command.onRun(this, input.split(" "));
+
+            }
         }
     }
 
     public void stop() {
         this.isRunning = false;
+    }
+
+    public void addItemToList(Item item) {
+        items.add(item);
+    }
+
+    public void listItems() {
+        for (int i = 0; i < items.size(); i++) {
+            System.out.println((i + 1) + ". " + items.get(i));
+        }
     }
 
 
