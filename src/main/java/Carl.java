@@ -30,7 +30,7 @@ public class Carl {
     private void start() {
         initCommands();
 
-        String banner = "  ____    _    ____  _     \n"
+        String banner = "  ____    _    ____  _     \n" // Used Gemini to create this Ascii Banner
                 + " / ___|  / \\  |  _ \\| |    \n"
                 + "| |     / _ \\ | |_) | |    \n"
                 + "| |___ / ___ \\|  _ <| |___ \n"
