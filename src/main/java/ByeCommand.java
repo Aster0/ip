@@ -2,9 +2,12 @@ public class ByeCommand implements Command {
 
 
     @Override
-    public void onRun(Carl carl, TaskManager storage, TaskList tasks, String[] args, String raw) {
+    public void onRun(Ui ui, TaskManager storage, TaskList tasks, String[] args, String raw) {
+        ui.showGoodbye();
+    }
 
-        System.out.println("Bye bye! Hope to see you again soon!");
-        carl.stop();
+    @Override
+    public boolean isExited() {
+        return true; // if ByeCommand is used
     }
 }

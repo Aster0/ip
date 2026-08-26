@@ -7,16 +7,16 @@ public class EventCommand extends ModifyTaskCommand {
     private static final String USAGE = "event <project_name> /from <date> /to <date>";
 
     @Override
-    public void onRun(Carl carl, TaskManager storage, TaskList tasks, String[] args, String raw) throws CarlException {
+    public void onRun(Ui ui, TaskManager storage, TaskList tasks, String[] args, String raw) throws CarlException {
         if (args.length < 2 || !raw.contains("/from") || !raw.contains("/to")) {
-            throw new CarlEmptyCommandException(USAGE);
+            throw new CarlCommandException(USAGE);
         }
 
         int fromIndex = getIndexOf(args, "/from");
         int toIndex = getIndexOf(args, "/to");
 
         if (fromIndex > toIndex) {
-            throw new CarlEmptyCommandException(USAGE);
+            throw new CarlCommandException(USAGE);
         }
 
         String name = String.join(" ", Arrays.copyOfRange(args, 1, fromIndex)).trim();
@@ -30,7 +30,7 @@ public class EventCommand extends ModifyTaskCommand {
             LocalDateTime timeTo = Parser.dateParser(to);
 
             tasks.addTaskToList(new Event(new Item(name), timeFrom, timeTo));
-            super.onRun(carl, storage, tasks, args, raw);
+            super.onRun(ui, storage, tasks, args, raw);
 
         } catch (DateTimeParseException e) {
             Parser.printDateError();
@@ -57,7 +57,7 @@ public class EventCommand extends ModifyTaskCommand {
 
     private void validateNonEmpty(String name, String from, String to) throws CarlException {
         if (name.isEmpty() || from.isEmpty() || to.isEmpty()) {
-            throw new CarlEmptyCommandException(USAGE);
+            throw new CarlCommandException(USAGE);
         }
     }
 }

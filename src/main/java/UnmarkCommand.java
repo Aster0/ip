@@ -1,15 +1,16 @@
 public class UnmarkCommand extends ModifyTaskCommand {
     @Override
-    public void onRun(Carl carl, TaskManager storage, TaskList tasks, String[] args, String raw) throws CarlException {
+    public void onRun(Ui ui, TaskManager storage, TaskList tasks, String[] args, String raw) throws CarlException {
 
         if (args.length < 2) {
-            throw new CarlEmptyCommandException("unmark <number> -" +
+            throw new CarlCommandException("unmark <number> -" +
                     " you can find the number from saying \"list\"!");
         }
 
         // unmark x
         int index = Integer.parseInt(args[1]);
-        tasks.revertTask(index - 1);
-        super.onRun(carl, storage, tasks, args, raw);
+        Task task = tasks.markTaskAsUndone(index - 1);
+        super.onRun(ui, storage, tasks, args, raw);
+        ui.showUnMarkTask(task);
     }
 }

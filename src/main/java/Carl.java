@@ -3,13 +3,13 @@ import java.util.*;
 public class Carl {
 
 
-    private final String BOT_NAME = "CARL";
-    public static final String SEPARATOR = "____________________________________________________________";
+    public static final String BOT_NAME = "CARL";
     private boolean isRunning = true;
 
     private Map<String, Command> commands = new HashMap<>();
     private TaskManager taskManager;
     private TaskList tasks;
+    private Ui ui;
 
     public static void main(String[] args) {
         Carl bot = new Carl();
@@ -31,22 +31,11 @@ public class Carl {
 
     private void start() {
         initCommands();
-
-        String banner = "  ____    _    ____  _     \n" // Used Gemini to create this Ascii Banner
-                + " / ___|  / \\  |  _ \\| |    \n"
-                + "| |     / _ \\ | |_) | |    \n"
-                + "| |___ / ___ \\|  _ <| |___ \n"
-                + " \\____/_/   \\_\\_| \\_\\____|\n";
-
-
+        ui = new Ui();
         taskManager = new TaskManager();
         tasks = new TaskList(taskManager.createSave());
 
-        System.out.println(SEPARATOR);
-        System.out.println(banner);
-
-        System.out.println("Hello there!  I am " + BOT_NAME + ".");
-        System.out.println("What do you need help in?");
+        ui.showWelcome();
 
         try (Scanner scanner = new Scanner(System.in)) { // added to make sure scanner closes (Closeable interface) after try block
 
@@ -55,7 +44,10 @@ public class Carl {
                 String input = scanner.nextLine().trim();
 
                 try {
-                    parseCommands(input);
+                    Command command = parseCommands(input);
+                    if (command.isExited()) {
+                        stop();
+                    }
                 }
                 catch(CarlException e) {
                     System.out.println(e.getMessage());
@@ -65,7 +57,7 @@ public class Carl {
         }
     }
 
-    private void parseCommands(String input) throws CarlException{
+    private Command parseCommands(String input) throws CarlException{
         String[] args = input.split(" ");
         Command command = commands.get(args[0].toLowerCase());
 
@@ -73,10 +65,12 @@ public class Carl {
             throw new CarlUnknownCommandException();
         }
 
-        command.onRun(this, taskManager, this.tasks, args, input);
+        command.onRun(ui, taskManager, this.tasks, args, input);
+
+        return command;
     }
 
-    public void stop() {
+    private void stop() {
         this.isRunning = false;
     }
 
