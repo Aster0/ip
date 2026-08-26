@@ -1,3 +1,5 @@
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 
 public class DeadlineCommand extends ModifyTaskCommand {
@@ -14,9 +16,27 @@ public class DeadlineCommand extends ModifyTaskCommand {
         String name = String.join(" ", Arrays.copyOfRange(args, 1, byIndex)).trim();
         String by = String.join(" ", Arrays.copyOfRange(args, byIndex + 1, args.length)).trim();
 
+
+
         validateNonEmpty(name, by);
-        tasks.addTaskToList(new Deadline(new Item(name), by));
-        super.onRun(carl, storage, tasks, args, raw);
+
+
+
+
+        try {
+            LocalDateTime timeBy = Parser.dateParser(by);
+
+            tasks.addTaskToList(new Deadline(new Item(name), timeBy));
+            super.onRun(carl, storage, tasks, args, raw);
+        } catch (DateTimeParseException e) {
+            Parser.printDateError();
+        }
+
+
+
+
+
+
     }
 
     private void validateNonEmpty(String name, String by) throws CarlException {

@@ -1,6 +1,2 @@
-D | 0 | Return Book | June 6th
-T | 1 | Watch Lecture
-E | 0 | Return Book | June 6th | Not Indicated
-D | 0 | Test Test | 5th August
-E | 0 | Testing 2 | 6th August | 7th August
-T | 1 | Test
+E | 0 | Project Meeting | 2026-12-20 1800 | 2026-12-20 2000
+E | 0 | Project Meeting 2 | 2026-12-20 18002 | 2026-12-20 2000

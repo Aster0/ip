@@ -1,3 +1,5 @@
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 
 public class EventCommand extends ModifyTaskCommand {
@@ -23,8 +25,18 @@ public class EventCommand extends ModifyTaskCommand {
 
         validateNonEmpty(name, from, to);
 
-        tasks.addTaskToList(new Event(new Item(name), from, to));
-        super.onRun(carl, storage, tasks, args, raw);
+        try {
+            LocalDateTime timeFrom = Parser.dateParser(from);
+            LocalDateTime timeTo = Parser.dateParser(to);
+
+            tasks.addTaskToList(new Event(new Item(name), timeFrom, timeTo));
+            super.onRun(carl, storage, tasks, args, raw);
+
+        } catch (DateTimeParseException e) {
+            Parser.printDateError();
+        }
+
+
     }
 
     private int getIndexOf(String[] args, String word) {
