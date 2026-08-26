@@ -5,6 +5,7 @@ import carl.task.Task;
 import carl.task.TaskList;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Ui {
@@ -52,22 +53,17 @@ public class Ui {
     public void showDeleteTask(Task task, int count) {
         System.out.println("Successfully removed this task! \n  " + task + "\n" + tasksLeft(count));
     }
+    public void showTaskList(List<Task> tasks) {
 
-    public void showTaskList(TaskList tasks) {
+        int i = 1;
 
-        AtomicInteger i = new AtomicInteger();
-        tasks.forEach((task) -> {
-            System.out.println(i.getAndIncrement() + 1 + ". " + task);
-        });
-    }
+        if (tasks.isEmpty()) {
+            System.out.println("No tasks found.");
+            return;
+        }
 
-    public void showTaskListDueOn(TaskList tasks, LocalDate time) {
-
-        AtomicInteger i = new AtomicInteger();
-        tasks.forEach((task) -> {
-            if (task.isDueOn(time)) {
-                System.out.println(i.getAndIncrement() + 1 + ". " + task);
-            }
-        });
+        for (Task task : tasks) {
+            System.out.println(i++ + ". " + task);
+        }
     }
 }
