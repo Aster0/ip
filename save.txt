@@ -1,0 +1,6 @@
+D | 0 | Return Book | June 6th
+T | 1 | Watch Lecture
+E | 0 | Return Book | June 6th | Not Indicated
+D | 0 | Test Test | 5th August
+E | 0 | Testing 2 | 6th August | 7th August
+T | 1 | Test

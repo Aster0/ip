@@ -1,12 +1,19 @@
 public class Task {
     protected Item item;
     protected TaskStatus status;
+    protected TaskType type;
 
-    public Task(Item item) {
+    public Task(Item item, TaskType type) {
         this.item = item;
         this.status = TaskStatus.NOT_DONE;
+        this.type = type;
     }
 
+    public Task(Item item, TaskStatus status, TaskType type) {
+        this.item = item;
+        this.status = status;
+        this.type = type;
+    }
 
     @Override
     public String toString() {
@@ -30,5 +37,35 @@ public class Task {
 
         this.status = TaskStatus.NOT_DONE;
         return true;
+    }
+
+    public String toSaveFormat() {
+        return String.format("%s | %d | %s", type, status.toInt(), item);
+
+    }
+
+    public static Task of(TaskData data) {
+        return switch (data.type) {
+            case TODO -> new Todo(data.item, data.status);
+            case EVENT -> new Event(data.item, data.status, data.from, data.to);
+            case DEADLINE -> new Deadline(data.item, data.status, data.from);
+        };
+    }
+
+
+    public static class TaskData {
+        private TaskType type;
+        private Item item;
+        private TaskStatus status;
+        private String from, to;
+
+
+        public TaskData(TaskType type, TaskStatus status, Item item, String from, String to) {
+            this.type = type;
+            this.item = item;
+            this.status = status;
+            this.from = from;
+            this.to = to;
+        }
     }
 }

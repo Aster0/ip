@@ -2,7 +2,7 @@ public class ListCommand implements Command {
 
 
     @Override
-    public void onRun(Carl carl, String[] args, String raw) {
-        carl.listItems();
+    public void onRun(Carl carl, TaskManager storage, TaskList tasks, String[] args, String raw) {
+        tasks.listItems();
     }
 }

@@ -1,5 +1,6 @@
 public interface Command {
 
 
-    public void onRun(Carl carl, String[] args, String raw) throws CarlException;
+    public void onRun(Carl carl, TaskManager storage, TaskList tasks,
+                      String[] args, String raw) throws CarlException;
 }
