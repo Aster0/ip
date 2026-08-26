@@ -1,3 +1,5 @@
+package carl.exceptions;
+
 public class CarlCommandException extends CarlException {
 
     public CarlCommandException(String usage) {

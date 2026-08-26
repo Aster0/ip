@@ -1,3 +1,9 @@
+package carl.ui;
+
+import carl.Carl;
+import carl.task.Task;
+import carl.task.TaskList;
+
 import java.time.LocalDate;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -36,7 +42,7 @@ public class Ui {
     }
 
     public void showMarkTaskAsDone(Task task) {
-        System.out.println("Done! Task is marked as done!\n" + task);
+        System.out.println("Done! carl.task.Task is marked as done!\n" + task);
     }
 
     public void showUnMarkTask(Task task) {

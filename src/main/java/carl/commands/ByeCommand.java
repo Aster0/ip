@@ -1,3 +1,9 @@
+package carl.commands;
+
+import carl.task.TaskList;
+import carl.task.TaskManager;
+import carl.ui.Ui;
+
 public class ByeCommand implements Command {
 
 
@@ -8,6 +14,6 @@ public class ByeCommand implements Command {
 
     @Override
     public boolean isExited() {
-        return true; // if ByeCommand is used
+        return true; // if carl.commands.ByeCommand is used
     }
 }

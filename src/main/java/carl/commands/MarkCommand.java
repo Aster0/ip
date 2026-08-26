@@ -1,3 +1,12 @@
+package carl.commands;
+
+import carl.exceptions.CarlCommandException;
+import carl.exceptions.CarlException;
+import carl.task.Task;
+import carl.task.TaskList;
+import carl.task.TaskManager;
+import carl.ui.Ui;
+
 public class MarkCommand extends ModifyTaskCommand {
 
 
