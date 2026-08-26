@@ -1,3 +1,5 @@
+package carl.task;
+
 public enum TaskStatus {
 
     NOT_DONE("[ ]"),

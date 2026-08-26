@@ -1,5 +1,9 @@
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+package carl.task;
+
+import carl.exceptions.CarlCommandException;
+import carl.exceptions.CarlException;
+import carl.exceptions.CarlUnknownTaskException;
+
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -45,7 +49,7 @@ public class TaskList {
         Task task = tasks.get(index);
 
         if (!task.markAsDone()) {
-            throw new CarlCommandException("Task is already marked as done, cannot be marked again!");
+            throw new CarlCommandException("carl.task.Task is already marked as done, cannot be marked again!");
         }
 
 
@@ -81,7 +85,7 @@ public class TaskList {
 
         if (!task.unMarkAsDone()) {
 
-            throw new CarlCommandException("Task is already not done, cannot be unmarked!");
+            throw new CarlCommandException("carl.task.Task is already not done, cannot be unmarked!");
         }
 
         return task;

@@ -1,3 +1,5 @@
+package carl.exceptions;
+
 public class CarlUnknownTaskException extends CarlException {
 
     public CarlUnknownTaskException() {

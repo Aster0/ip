@@ -1,3 +1,12 @@
+package carl;
+
+import carl.commands.*;
+import carl.exceptions.CarlException;
+import carl.exceptions.CarlUnknownCommandException;
+import carl.task.TaskList;
+import carl.task.TaskManager;
+import carl.ui.Ui;
+
 import java.util.*;
 
 public class Carl {
