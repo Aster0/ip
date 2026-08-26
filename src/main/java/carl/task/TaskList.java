@@ -4,6 +4,8 @@ import carl.exceptions.CarlCommandException;
 import carl.exceptions.CarlException;
 import carl.exceptions.CarlUnknownTaskException;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -38,6 +40,24 @@ public class TaskList {
         for (Task task : tasks) {
             action.accept(task);
         }
+    }
+
+    public List<Task> getAllTasks() {
+
+        return new ArrayList<>(this.tasks);
+    }
+
+    public List<Task> getTasksDueOn(LocalDate date) {
+
+        List<Task> tasks = new ArrayList<>();
+
+        for (Task task : this.tasks) {
+            if (task.isDueOn(date)) {
+                tasks.add(task);
+            }
+        }
+
+        return tasks;
     }
 
     public Task markTaskAsDone(int index) throws CarlCommandException {

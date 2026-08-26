@@ -23,7 +23,7 @@ public class DueCommand implements Command {
         try {
             LocalDate date = Parser.dateParserWithoutTime(dateString);
 
-            ui.showTaskListDueOn(tasks, date);
+            ui.showTaskList(tasks.getTasksDueOn(date));
 
 
         } catch (DateTimeParseException e) {
