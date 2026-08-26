@@ -36,8 +36,7 @@ public class EventCommand extends ModifyTaskCommand {
         try {
             LocalDateTime timeFrom = Parser.dateParser(from);
             LocalDateTime timeTo = Parser.dateParser(to);
-
-            System.out.println("test");
+            
 
             addTask(name, timeFrom, timeTo, tasks, ui);
             super.onRun(ui, storage, tasks, args, raw);
