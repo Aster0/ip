@@ -13,4 +13,11 @@ public enum TaskStatus {
     public String toString() {
         return prefix;
     }
+
+    public int toInt() {
+        return switch (this) {
+            case DONE -> 1;
+            case NOT_DONE -> 0;
+        };
+    }
 }

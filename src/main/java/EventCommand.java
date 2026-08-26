@@ -1,11 +1,11 @@
 import java.util.Arrays;
 
-public class EventCommand implements Command {
+public class EventCommand extends ModifyTaskCommand {
 
     private static final String USAGE = "event <project_name> /from <date> /to <date>";
 
     @Override
-    public void onRun(Carl carl, String[] args, String raw) throws CarlException {
+    public void onRun(Carl carl, TaskManager storage, TaskList tasks, String[] args, String raw) throws CarlException {
         if (args.length < 2 || !raw.contains("/from") || !raw.contains("/to")) {
             throw new CarlEmptyCommandException(USAGE);
         }
@@ -23,7 +23,8 @@ public class EventCommand implements Command {
 
         validateNonEmpty(name, from, to);
 
-        carl.addTaskToList(new Event(new Item(name), from, to));
+        tasks.addTaskToList(new Event(new Item(name), from, to));
+        super.onRun(carl, storage, tasks, args, raw);
     }
 
     private int getIndexOf(String[] args, String word) {

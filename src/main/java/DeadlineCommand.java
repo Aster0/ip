@@ -1,10 +1,10 @@
 import java.util.Arrays;
 
-public class DeadlineCommand implements Command {
+public class DeadlineCommand extends ModifyTaskCommand {
 
 
     @Override
-    public void onRun(Carl carl, String[] args, String raw) throws CarlException {
+    public void onRun(Carl carl, TaskManager storage, TaskList tasks, String[] args, String raw) throws CarlException {
 
         if (args.length < 2 || !raw.contains("/by")) {
             throw new CarlEmptyCommandException("deadline <project_name> /by <date>");
@@ -15,7 +15,8 @@ public class DeadlineCommand implements Command {
         String by = String.join(" ", Arrays.copyOfRange(args, byIndex + 1, args.length)).trim();
 
         validateNonEmpty(name, by);
-        carl.addTaskToList(new Deadline(new Item(name), by));
+        tasks.addTaskToList(new Deadline(new Item(name), by));
+        super.onRun(carl, storage, tasks, args, raw);
     }
 
     private void validateNonEmpty(String name, String by) throws CarlException {
