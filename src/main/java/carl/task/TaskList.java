@@ -69,7 +69,7 @@ public class TaskList {
         Task task = tasks.get(index);
 
         if (!task.markAsDone()) {
-            throw new CarlCommandException("carl.task.Task is already marked as done, cannot be marked again!");
+            throw new CarlCommandException("Task is already marked as done, cannot be marked again!");
         }
 
 
@@ -105,7 +105,7 @@ public class TaskList {
 
         if (!task.unMarkAsDone()) {
 
-            throw new CarlCommandException("carl.task.Task is already not done, cannot be unmarked!");
+            throw new CarlCommandException("Task is already not done, cannot be unmarked!");
         }
 
         return task;

@@ -2,10 +2,7 @@ package carl.commands;
 
 import carl.exceptions.CarlCommandException;
 import carl.exceptions.CarlException;
-import carl.task.Item;
-import carl.task.TaskList;
-import carl.task.TaskManager;
-import carl.task.Todo;
+import carl.task.*;
 import carl.ui.Ui;
 
 import java.util.Arrays;
@@ -20,9 +17,10 @@ public class TodoCommand extends ModifyTaskCommand {
         }
 
         String name = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
-        tasks.addTaskToList(new Todo(new Item(name)));
 
+        Task task = new Todo(new Item(name));
+        tasks.addTaskToList(task);
         super.onRun(ui, storage, tasks, args, raw);
-
+        ui.showAddTask(task, tasks.getTasksLeft());
     }
 }

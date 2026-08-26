@@ -2,10 +2,7 @@ package carl.commands;
 
 import carl.exceptions.CarlCommandException;
 import carl.exceptions.CarlException;
-import carl.task.Event;
-import carl.task.Item;
-import carl.task.TaskList;
-import carl.task.TaskManager;
+import carl.task.*;
 import carl.ui.Ui;
 import carl.util.Parser;
 
@@ -40,7 +37,7 @@ public class EventCommand extends ModifyTaskCommand {
             LocalDateTime timeFrom = Parser.dateParser(from);
             LocalDateTime timeTo = Parser.dateParser(to);
 
-            tasks.addTaskToList(new Event(new Item(name), timeFrom, timeTo));
+            addTask(name, timeFrom, timeTo, tasks, ui);
             super.onRun(ui, storage, tasks, args, raw);
 
         } catch (DateTimeParseException e) {
@@ -48,6 +45,12 @@ public class EventCommand extends ModifyTaskCommand {
         }
 
 
+    }
+
+    private void addTask(String name, LocalDateTime from, LocalDateTime to, TaskList tasks, Ui ui) {
+        Task task = new Event(new Item(name), from, to);
+        tasks.addTaskToList(task);
+        ui.showAddTask(task, tasks.getTasksLeft());
     }
 
     private int getIndexOf(String[] args, String word) {
