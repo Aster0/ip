@@ -2,6 +2,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -23,25 +25,43 @@ public class TaskManager {
                 String[] args = line.split( "\\s*\\|\\s*");
                 // using regex to ignore empty spaces. i.e., D|1|... will work too
 
-                // prefix | status | name | by | to
-                Item item = new Item(args[2]);
-                String from = args.length > 3 ? args[3] : "Not Indicated";
-                String to = args.length > 4 ? args[4] : "Not Indicated";
-
-                Task.TaskData data = new Task.TaskData(TaskType.of(args[0]),
-                        args[1].equals("1") ? TaskStatus.DONE : TaskStatus.NOT_DONE,
-                        item, from, to);
-
-                Task task = Task.of(data);
-
+                Task task = parseStringToTask(args);
                 tasks.add(task);
 
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("Can't load file: " + e.getMessage());
         }
 
         return tasks;
+    }
+
+    private Task parseStringToTask(String[] args) {
+        // prefix | status | name | by | to
+        Item item = new Item(args[2]);
+        String from = args.length > 3 ? args[3] : "Not Indicated";
+        String to = args.length > 4 ? args[4] : "Not Indicated";
+        LocalDateTime timeFrom, timeTo;
+
+        timeFrom = parseStringToDate(from);
+        timeTo = parseStringToDate(to);
+
+        Task.TaskData data = new Task.TaskData(TaskType.of(args[0]),
+                args[1].equals("1") ? TaskStatus.DONE : TaskStatus.NOT_DONE,
+                item, timeFrom, timeTo);
+
+        return Task.of(data);
+    }
+
+    private LocalDateTime parseStringToDate(String date) {
+        LocalDateTime time;
+        try {
+            time = Parser.dateParser(date);
+        } catch (DateTimeParseException e) {
+            time = LocalDateTime.now();
+        }
+
+        return time;
     }
 
     public void saveAll(TaskList tasks) {

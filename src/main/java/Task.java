@@ -1,3 +1,8 @@
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 public class Task {
     protected Item item;
     protected TaskStatus status;
@@ -52,15 +57,24 @@ public class Task {
         };
     }
 
+    public boolean isDueOn(LocalDate targetDate) {
+        return isOnDate(targetDate);
+    }
+
+    protected boolean isOnDate(LocalDate targetDate) {
+        return false;
+    }
+
 
     public static class TaskData {
         private TaskType type;
         private Item item;
         private TaskStatus status;
-        private String from, to;
+        private LocalDateTime from, to;
 
 
-        public TaskData(TaskType type, TaskStatus status, Item item, String from, String to) {
+
+        public TaskData(TaskType type, TaskStatus status, Item item, LocalDateTime from, LocalDateTime to) {
             this.type = type;
             this.item = item;
             this.status = status;

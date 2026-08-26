@@ -26,6 +26,7 @@ public class Carl {
         commands.put("event", new EventCommand());
         commands.put("todo", new TodoCommand());
         commands.put("delete", new DeleteCommand());
+        commands.put("due", new DueCommand());
     }
 
     private void start() {
