@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -54,6 +55,14 @@ public class Task {
             case EVENT -> new Event(data.item, data.status, data.from, data.to);
             case DEADLINE -> new Deadline(data.item, data.status, data.from);
         };
+    }
+
+    public boolean isDueOn(LocalDate targetDate) {
+        return isOnDate(targetDate);
+    }
+
+    protected boolean isOnDate(LocalDate targetDate) {
+        return false;
     }
 
 

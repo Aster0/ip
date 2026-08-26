@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Deadline extends Task {
@@ -22,6 +23,11 @@ public class Deadline extends Task {
     @Override
     public String toSaveFormat() {
         return String.format("%s | %s", super.toSaveFormat(), by.format(Parser.dateFormatterSave()));
+    }
+
+    @Override
+    protected boolean isOnDate(LocalDate targetDate) {
+        return targetDate.isEqual(this.by.toLocalDate());
     }
 }
 

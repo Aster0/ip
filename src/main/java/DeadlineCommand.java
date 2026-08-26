@@ -29,7 +29,7 @@ public class DeadlineCommand extends ModifyTaskCommand {
             tasks.addTaskToList(new Deadline(new Item(name), timeBy));
             super.onRun(carl, storage, tasks, args, raw);
         } catch (DateTimeParseException e) {
-            Parser.printDateError();
+            throw new CarlEmptyCommandException(Parser.printDateError());
         }
 
 

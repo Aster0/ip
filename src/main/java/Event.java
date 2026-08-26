@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Event extends Task {
@@ -26,6 +27,12 @@ public class Event extends Task {
     public String toSaveFormat() {
         return String.format("%s | %s | %s", super.toSaveFormat(), from.format(Parser.dateFormatterSave()),
                 to.format(Parser.dateFormatterSave()));
+    }
+
+    @Override
+    protected boolean isOnDate(LocalDate targetDate) {
+        return !targetDate.isBefore(this.from.toLocalDate())
+                && !targetDate.isAfter(this.to.toLocalDate());
     }
 }
 

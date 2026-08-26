@@ -24,7 +24,7 @@ public class TaskManager {
 
                 String[] args = line.split( "\\s*\\|\\s*");
                 // using regex to ignore empty spaces. i.e., D|1|... will work too
-                
+
                 Task task = parseStringToTask(args);
                 tasks.add(task);
 

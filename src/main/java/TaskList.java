@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class TaskList {
@@ -37,6 +39,18 @@ public class TaskList {
             System.out.println((i + 1) + ". " + tasks.get(i));
         }
     }
+
+
+    public void listItems(LocalDate time) {
+        for (int i = 0; i < tasks.size(); i++) {
+            Task task = tasks.get(i);
+
+            if (task.isDueOn(time)) {
+                System.out.println((i + 1) + ". " + tasks.get(i));
+            }
+        }
+    }
+
 
     public void completeTask(int index) {
 
