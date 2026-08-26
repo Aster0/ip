@@ -37,13 +37,14 @@ public class EventCommand extends ModifyTaskCommand {
             LocalDateTime timeFrom = Parser.dateParser(from);
             LocalDateTime timeTo = Parser.dateParser(to);
 
+            System.out.println("test");
+
             addTask(name, timeFrom, timeTo, tasks, ui);
             super.onRun(ui, storage, tasks, args, raw);
 
         } catch (DateTimeParseException e) {
-            Parser.printDateError();
+            throw new CarlCommandException(Parser.printDateError());
         }
-
 
     }
 
