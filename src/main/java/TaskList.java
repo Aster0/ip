@@ -1,6 +1,7 @@
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class TaskList {
 
@@ -12,12 +13,6 @@ public class TaskList {
 
     public void addTaskToList(Task task) {
         tasks.add(task);
-
-        System.out.println(Carl.SEPARATOR);
-        System.out.println("Okay! I have added this task: \n  " + task + "\n" + tasksLeft());
-        System.out.println(Carl.SEPARATOR);
-
-
     }
 
     public String toSaveString() {
@@ -30,49 +25,35 @@ public class TaskList {
         return sb.toString();
     }
 
-    private String tasksLeft() {
-        return "\nNow you have " + tasks.size() + " tasks in the list.";
+    public int getTasksLeft() {
+        return tasks.size();
     }
 
-    public void listItems() {
-        for (int i = 0; i < tasks.size(); i++) {
-            System.out.println((i + 1) + ". " + tasks.get(i));
+    public void forEach(Consumer<? super Task> action) { // so we dont need to expose a getter like getTaskList (violate OOP)
+
+        for (Task task : tasks) {
+            action.accept(task);
         }
     }
 
-
-    public void listItems(LocalDate time) {
-        for (int i = 0; i < tasks.size(); i++) {
-            Task task = tasks.get(i);
-
-            if (task.isDueOn(time)) {
-                System.out.println((i + 1) + ". " + tasks.get(i));
-            }
-        }
-    }
-
-
-    public void completeTask(int index) {
+    public Task markTaskAsDone(int index) throws CarlCommandException {
 
         if (index < 0 || index >= tasks.size()) {
-            System.out.println("Invalid task number! Check \"list\"!");
-            return;
+            throw new CarlCommandException("Invalid task number! Check \"list\"!");
         }
 
         Task task = tasks.get(index);
 
-        if (task.markAsDone()) {
-            System.out.println("Successfully marked this task as done! \n  " + task);
-            return;
+        if (!task.markAsDone()) {
+            throw new CarlCommandException("Task is already marked as done, cannot be marked again!");
         }
 
-        System.out.println("Task is already marked as done, cannot be marked again!");
 
-
+        return task;
 
     }
 
-    public void deleteTask(int index) throws CarlException {
+    public Task deleteTask(int index) throws CarlException {
 
         if (index >= tasks.size()) {
             throw new CarlUnknownTaskException();
@@ -85,23 +66,25 @@ public class TaskList {
         }
 
         tasks.remove(index);
-        System.out.println("Successfully removed this task! \n  " + task + "\n" + tasksLeft());
+
+        return task;
 
     }
 
-    public void revertTask(int index) {
+    public Task markTaskAsUndone(int index) throws CarlCommandException {
 
         if (index < 0 || index >= tasks.size()) {
-            System.out.println("Invalid task number! Check \"list\"!");
-            return;
+            throw new CarlCommandException("Invalid task number! Check \"list\"!");
         }
+
         Task task = tasks.get(index);
 
-        if (task.unMarkAsDone()) {
-            System.out.println("Successfully unmarked this task as not done! \n  " + task);
-            return;
+        if (!task.unMarkAsDone()) {
+
+            throw new CarlCommandException("Task is already not done, cannot be unmarked!");
         }
-        System.out.println("Task is already not done, cannot be unmarked!");
+
+        return task;
 
 
 
