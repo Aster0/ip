@@ -1,6 +1,6 @@
 package carl.task;
 
-import carl.util.Parser;
+import carl.util.DateParser;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -60,7 +60,7 @@ public class TaskManager {
     private LocalDateTime parseStringToDate(String date) {
         LocalDateTime time;
         try {
-            time = Parser.dateParser(date);
+            time = DateParser.dateParser(date);
         } catch (DateTimeParseException e) {
             time = LocalDateTime.now();
         }

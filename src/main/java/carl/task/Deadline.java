@@ -1,6 +1,6 @@
 package carl.task;
 
-import carl.util.Parser;
+import carl.util.DateParser;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,12 +21,12 @@ public class Deadline extends Task {
 
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + by.format(Parser.dateFormatter()) + ")";
+        return "[D]" + super.toString() + " (by: " + by.format(DateParser.dateFormatter()) + ")";
     }
 
     @Override
     public String toSaveFormat() {
-        return String.format("%s | %s", super.toSaveFormat(), by.format(Parser.dateFormatterSave()));
+        return String.format("%s | %s", super.toSaveFormat(), by.format(DateParser.dateFormatterSave()));
     }
 
     @Override

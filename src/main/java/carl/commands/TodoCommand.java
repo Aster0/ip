@@ -7,17 +7,15 @@ import carl.ui.Ui;
 
 import java.util.Arrays;
 
-public class TodoCommand extends ModifyTaskCommand {
+public class TodoCommand extends AddTaskCommand {
+
+    public TodoCommand(String name) {
+        super(name);
+    }
 
 
     @Override
     public void onRun(Ui ui, TaskManager storage, TaskList tasks, String[] args, String raw) throws CarlException {
-        if (args.length < 2) {
-            throw new CarlCommandException("todo <project_name>");
-        }
-
-        String name = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
-
         Task task = new Todo(new Item(name));
         tasks.addTaskToList(task);
         super.onRun(ui, storage, tasks, args, raw);

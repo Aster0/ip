@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-public class Parser {
+public class DateParser {
 
     public static LocalDateTime dateParser(String strDate) throws DateTimeParseException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
