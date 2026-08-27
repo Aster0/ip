@@ -57,6 +57,11 @@ public class Task {
         };
     }
 
+
+    public boolean hasNameMatch(String keyword) {
+        return item.hasNameMatch(keyword);
+    }
+
     public boolean isDueOn(LocalDate targetDate) {
         return isOnDate(targetDate);
     }

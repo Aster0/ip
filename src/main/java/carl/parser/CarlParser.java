@@ -25,6 +25,7 @@ public class CarlParser {
         commands.put("todo", new TodoCommandParser());
         commands.put("delete", (args) -> new DeleteCommand());
         commands.put("due", (args) -> new DueCommand());
+        commands.put("find", new FindCommandParser());
     }
 
     public Command parseCommands(String input, Ui ui, TaskManager taskManager, TaskList tasks) throws CarlException {
