@@ -13,4 +13,8 @@ public class Item {
         return name;
     }
 
+
+    public boolean hasNameMatch(String keyword) {
+        return this.name.toLowerCase().contains(keyword.toLowerCase());
+    }
 }

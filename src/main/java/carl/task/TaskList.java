@@ -35,13 +35,6 @@ public class TaskList {
         return tasks.size();
     }
 
-    public void forEach(Consumer<? super Task> action) { // so we dont need to expose a getter like getTaskList (violate OOP)
-
-        for (Task task : tasks) {
-            action.accept(task);
-        }
-    }
-
     public List<Task> getAllTasks() {
 
         return new ArrayList<>(this.tasks);
@@ -53,6 +46,19 @@ public class TaskList {
 
         for (Task task : this.tasks) {
             if (task.isDueOn(date)) {
+                tasks.add(task);
+            }
+        }
+
+        return tasks;
+    }
+
+    public List<Task> findTask(String keyword) {
+
+        List<Task> tasks = new ArrayList<>();
+
+        for (Task task : this.tasks) {
+            if (task.hasNameMatch(keyword)) {
                 tasks.add(task);
             }
         }
