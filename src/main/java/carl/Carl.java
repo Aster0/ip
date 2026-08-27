@@ -3,6 +3,7 @@ package carl;
 import carl.commands.*;
 import carl.exceptions.CarlException;
 import carl.exceptions.CarlUnknownCommandException;
+import carl.parser.CarlParser;
 import carl.task.TaskList;
 import carl.task.TaskManager;
 import carl.ui.Ui;
@@ -26,25 +27,16 @@ public class Carl {
 
     }
 
-    private void initCommands() {
-        commands.put("bye", new ByeCommand());
-        commands.put("list", new ListCommand());
-        commands.put("mark", new MarkCommand());
-        commands.put("unmark", new UnmarkCommand());
-        commands.put("deadline", new DeadlineCommand());
-        commands.put("event", new EventCommand());
-        commands.put("todo", new TodoCommand());
-        commands.put("delete", new DeleteCommand());
-        commands.put("due", new DueCommand());
-    }
 
     private void start() {
-        initCommands();
+
         ui = new Ui();
         taskManager = new TaskManager();
         tasks = new TaskList(taskManager.createSave());
 
         ui.showWelcome();
+
+        CarlParser parser = new CarlParser();
 
         try (Scanner scanner = new Scanner(System.in)) { // added to make sure scanner closes (Closeable interface) after try block
 
@@ -53,7 +45,7 @@ public class Carl {
                 String input = scanner.nextLine().trim();
 
                 try {
-                    Command command = parseCommands(input);
+                    Command command = parser.parseCommands(input, ui, taskManager, tasks);
                     if (command.isExited()) {
                         stop();
                     }

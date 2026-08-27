@@ -1,6 +1,6 @@
 package carl.task;
 
-import carl.util.Parser;
+import carl.util.DateParser;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,14 +23,14 @@ public class Event extends Task {
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + from.format(Parser.dateFormatter())
-                + " to: " + to.format(Parser.dateFormatter()) + ")";
+        return "[E]" + super.toString() + " (from: " + from.format(DateParser.dateFormatter())
+                + " to: " + to.format(DateParser.dateFormatter()) + ")";
     }
 
     @Override
     public String toSaveFormat() {
-        return String.format("%s | %s | %s", super.toSaveFormat(), from.format(Parser.dateFormatterSave()),
-                to.format(Parser.dateFormatterSave()));
+        return String.format("%s | %s | %s", super.toSaveFormat(), from.format(DateParser.dateFormatterSave()),
+                to.format(DateParser.dateFormatterSave()));
     }
 
     @Override
