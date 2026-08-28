@@ -12,8 +12,7 @@ import java.util.Map;
 
 public class CarlParser {
     private Map<String, Parser<? extends Command>> commands = new HashMap<>();
-
-
+    
     // TODO: Parser for other commands
     public CarlParser() {
         commands.put("bye", (args) -> new ByeCommand());
