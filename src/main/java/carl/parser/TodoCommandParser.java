@@ -4,6 +4,9 @@ import carl.commands.TodoCommand;
 import carl.exceptions.CarlCommandException;
 import carl.exceptions.CarlException;
 
+/**
+ * Parses input arguments and creates a new TodoCommand object.
+ */
 public class TodoCommandParser implements Parser<TodoCommand> {
 
     /**

@@ -1,15 +1,19 @@
 package carl;
 
-import carl.commands.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+import carl.commands.Command;
 import carl.exceptions.CarlException;
-import carl.exceptions.CarlUnknownCommandException;
 import carl.parser.CarlParser;
 import carl.task.TaskList;
 import carl.task.TaskManager;
 import carl.ui.Ui;
 
-import java.util.*;
-
+/**
+ * Represents the main entry point and controller of the Carl chatbot application.
+ */
 public class Carl {
 
 
@@ -21,6 +25,11 @@ public class Carl {
     private TaskList tasks;
     private Ui ui;
 
+    /**
+     * Main method to launch the Carl application.
+     *
+     * @param args Command line arguments.
+     */
     public static void main(String[] args) {
         Carl bot = new Carl();
         bot.start();
@@ -38,7 +47,9 @@ public class Carl {
 
         CarlParser parser = new CarlParser();
 
-        try (Scanner scanner = new Scanner(System.in)) { // added to make sure scanner closes (Closeable interface) after try block
+        try (Scanner scanner = new Scanner(System.in)) {
+            // added to make sure scanner closes (Closeable interface)
+            // after try block
 
 
             while (isRunning) {
@@ -49,26 +60,12 @@ public class Carl {
                     if (command.isExited()) {
                         stop();
                     }
-                }
-                catch(CarlException e) {
+                } catch (CarlException e) {
                     System.out.println(e.getMessage());
                 }
 
             }
         }
-    }
-
-    private Command parseCommands(String input) throws CarlException{
-        String[] args = input.split(" ");
-        Command command = commands.get(args[0].toLowerCase());
-
-        if (command == null) {
-            throw new CarlUnknownCommandException();
-        }
-
-        command.onRun(ui, taskManager, this.tasks, args, input);
-
-        return command;
     }
 
     private void stop() {

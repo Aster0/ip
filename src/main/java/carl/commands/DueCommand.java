@@ -1,15 +1,14 @@
 package carl.commands;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+
 import carl.exceptions.CarlCommandException;
 import carl.exceptions.CarlException;
 import carl.task.TaskList;
 import carl.task.TaskManager;
 import carl.ui.Ui;
 import carl.util.DateParser;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-
 /**
  * Represents a command to find and list tasks due on a specific date.
  */
@@ -43,7 +42,6 @@ public class DueCommand implements Command {
         } catch (DateTimeParseException e) {
             throw new CarlCommandException(DateParser.printDateErrorWithoutTime());
         }
-        
     }
 
 }

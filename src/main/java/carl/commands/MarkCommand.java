@@ -7,14 +7,27 @@ import carl.task.TaskList;
 import carl.task.TaskManager;
 import carl.ui.Ui;
 
+/**
+ * Represents a command to mark a task as completed in the task list.
+ */
 public class MarkCommand extends ModifyTaskCommand {
 
-
+    /**
+     * {@inheritDoc}
+     * Marks the specified task as done, updates the storage, and informs the user.
+     *
+     * @param ui      User interface for interacting with the user.
+     * @param storage Task manager handling task data persistence.
+     * @param tasks   List of current tasks.
+     * @param args    Arguments parsed from the user input.
+     * @param raw     Raw input string entered by the user.
+     * @throws CarlException If the task index is missing, invalid, or the task is already marked as done.
+     */
     @Override
     public void onRun(Ui ui, TaskManager storage, TaskList tasks, String[] args, String raw) throws CarlException {
         if (args.length < 2) {
-            throw new CarlCommandException("mark <number> -" +
-                    " you can find the number from saying \"list\"!");
+            throw new CarlCommandException("mark <number> -"
+                    + " you can find the number from saying \"list\"!");
         }
 
         // mark x

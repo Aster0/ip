@@ -1,13 +1,16 @@
 package carl.parser;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
+
 import carl.commands.EventCommand;
 import carl.exceptions.CarlCommandException;
 import carl.exceptions.CarlException;
 import carl.util.DateParser;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeParseException;
-
+/**
+ * Parses input arguments and creates a new EventCommand object.
+ */
 public class EventCommandParser implements Parser<EventCommand> {
     private static final String USAGE = "event <project_name> /from <date> /to <date>";
 
@@ -21,10 +24,10 @@ public class EventCommandParser implements Parser<EventCommand> {
     @Override
     public EventCommand parse(String input) throws CarlException {
 
-       String[] parts = extractParts(input);
-       String name = parts[0];
-       String fromStr = parts[1];
-       String toStr = parts[2];
+        String[] parts = extractParts(input);
+        String name = parts[0];
+        String fromStr = parts[1];
+        String toStr = parts[2];
 
         if (name.isEmpty() || fromStr.isEmpty() || toStr.isEmpty()) {
             throw new CarlCommandException(USAGE);
@@ -40,8 +43,7 @@ public class EventCommandParser implements Parser<EventCommand> {
 
             return new EventCommand(name, from, to);
 
-        }
-        catch (DateTimeParseException e) {
+        } catch (DateTimeParseException e) {
             throw new CarlCommandException(DateParser.printDateError());
         }
     }
