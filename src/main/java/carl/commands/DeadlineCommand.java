@@ -1,14 +1,14 @@
 package carl.commands;
 
-import carl.exceptions.CarlCommandException;
-import carl.exceptions.CarlException;
-import carl.task.*;
-import carl.ui.Ui;
-import carl.util.DateParser;
-
 import java.time.LocalDateTime;
-import java.time.format.DateTimeParseException;
-import java.util.Arrays;
+
+import carl.exceptions.CarlException;
+import carl.task.Deadline;
+import carl.task.Item;
+import carl.task.Task;
+import carl.task.TaskList;
+import carl.task.TaskManager;
+import carl.ui.Ui;
 
 /**
  * Represents a command to create and add a deadline task.

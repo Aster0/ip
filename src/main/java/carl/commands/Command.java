@@ -21,7 +21,7 @@ public interface Command {
      * @param raw Raw input string entered by the user.
      * @throws CarlException If an error occurs during command execution.
      */
-    public void onRun(Ui ui, TaskManager storage, TaskList tasks,
+    void onRun(Ui ui, TaskManager storage, TaskList tasks,
                       String[] args, String raw) throws CarlException;
 
 
@@ -31,7 +31,7 @@ public interface Command {
      *
      * @return True if the application should terminate, false otherwise.
      */
-    default public boolean isExited() {
+    default boolean isExited() {
         return false; // if the progarm must be terminated via carl.commands.ByeCommand
     }
 }

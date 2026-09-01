@@ -4,6 +4,9 @@ import carl.task.TaskList;
 import carl.task.TaskManager;
 import carl.ui.Ui;
 
+/**
+ * Represents a command to list all current tasks to the user.
+ */
 public class ListCommand implements Command {
 
 
