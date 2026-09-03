@@ -3,12 +3,14 @@ package carl.parser;
 import java.util.HashMap;
 import java.util.Map;
 
-import carl.commands.*;
+import carl.commands.ByeCommand;
+import carl.commands.Command;
+import carl.commands.DeleteCommand;
+import carl.commands.ListCommand;
+import carl.commands.MarkCommand;
+import carl.commands.UnmarkCommand;
 import carl.exceptions.CarlException;
 import carl.exceptions.CarlUnknownCommandException;
-import carl.task.TaskList;
-import carl.task.TaskManager;
-import carl.ui.Ui;
 
 /**
  * Parses user input and maps it to the corresponding command for execution.

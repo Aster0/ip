@@ -1,5 +1,7 @@
 package carl.ui;
 
+import java.io.IOException;
+
 import carl.Carl;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -7,8 +9,9 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
+/**
+ * Serves as the main GUI entry point for the Carl application.
+ */
 public class MainApplication extends Application {
 
     @Override

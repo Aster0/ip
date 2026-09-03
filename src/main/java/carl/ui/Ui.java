@@ -2,6 +2,8 @@ package carl.ui;
 
 
 import java.util.List;
+
+import carl.Carl;
 import carl.task.Task;
 
 
@@ -11,22 +13,31 @@ import carl.task.Task;
  * Handles displaying messages to the user.
  */
 public class Ui {
-    public static final String SEPARATOR = "____________________________________________________________";
+    public static final String SEPARATOR = "_____________________________________";
 
+
+    private String buildMessage(String... inputs) {
+        StringBuilder sb = new StringBuilder();
+
+        for (String str : inputs) {
+            sb.append(str).append("\n");
+        }
+
+        return sb.toString();
+    }
 
     /**
      * Displays the welcome message and banner to the user.
      */
     public String showWelcome() {
-        return "  ____    _    ____  _     \n" // Used Gemini to create this Ascii Banner
+        return buildMessage("  ____    _    ____  _     \n" // Used Gemini to create this Ascii Banner
                 + " / ___|  / \\  |  _ \\| |    \n"
                 + "| |     / _ \\ | |_) | |    \n"
                 + "| |___ / ___ \\|  _ <| |___ \n"
-                + " \\____/_/   \\_\\_| \\_\\____|\n" +
-                "" +
-                "" + SEPARATOR + "\n" +
-                "\"Hello there!  I am \" + Carl.BOT_NAME + \".\"" +
-                "\nWhat do you need help in?";
+                + " \\____/_/   \\_\\_| \\_\\____|",
+                SEPARATOR,
+                "\"Hello there!  I am " + Carl.BOT_NAME + "!\"",
+                "What do you need help in?");
 
     }
 
@@ -45,8 +56,8 @@ public class Ui {
      */
     public String showAddTask(Task task, int count) {
 
-        return SEPARATOR + "\n Okay! I have added this task: \n  "
-                + task + "\n" + tasksLeft(count) + "\n" + SEPARATOR;
+        return buildMessage(SEPARATOR, "Okay! I have added this task:",
+                "  " + task, tasksLeft(count), SEPARATOR);
     }
 
     private String tasksLeft(int count) {
@@ -89,17 +100,17 @@ public class Ui {
      */
     public String showTaskList(List<Task> tasks) {
 
-        int i = 1;
-
         if (tasks.isEmpty()) {
             return "No tasks found.";
         }
 
-        String message = "";
-        for (Task task : tasks) {
-            message += i++ + ". " + task + "\n";
+        String[] taskStrings = new String[tasks.size()];
+
+        for (int i = 0; i < tasks.size(); i++) {
+            Task task = tasks.get(i);
+            taskStrings[i] = (i + 1) + ". " + task;
         }
 
-        return message;
+        return buildMessage(taskStrings);
     }
 }
