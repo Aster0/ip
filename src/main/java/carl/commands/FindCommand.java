@@ -28,12 +28,12 @@ public class FindCommand implements Command {
      * @param ui      User interface for interacting with the user.
      * @param storage Task manager handling task data persistence.
      * @param tasks   List of current tasks.
-     * @param args    Arguments parsed from the user input.
      * @param raw     Raw input string entered by the user.
+     * @return
      * @throws CarlException If an error occurs during execution.
      */
     @Override
-    public void onRun(Ui ui, TaskManager storage, TaskList tasks, String[] args, String raw) throws CarlException {
-        ui.showTaskList(tasks.findTask(keyword));
+    public CommandResult onRun(Ui ui, TaskManager storage, TaskList tasks, String raw) throws CarlException {
+        return CommandResult.success(ui.showTaskList(tasks.findTask(keyword)));
     }
 }

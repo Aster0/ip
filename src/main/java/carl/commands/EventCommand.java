@@ -35,24 +35,25 @@ public class EventCommand extends AddTaskCommand {
      * {@inheritDoc}
      * Adds the event task to the task list, saves the list, and informs the user.
      *
-     * @param ui User interface for interacting with the user.
+     * @param ui      User interface for interacting with the user.
      * @param storage Task manager handling task data persistence.
-     * @param tasks List of current tasks.
-     * @param args Arguments parsed from the user input.
-     * @param raw Raw input string entered by the user.
+     * @param tasks   List of current tasks.
+     * @param raw     Raw input string entered by the user.
+     * @return
      * @throws CarlException If an error occurs during execution.
      */
     @Override
-    public void onRun(Ui ui, TaskManager storage, TaskList tasks, String[] args, String raw) throws CarlException {
-        addTask(name, from, to, tasks, ui);
-        super.onRun(ui, storage, tasks, args, raw);
+    public CommandResult execute(Ui ui, TaskManager storage, TaskList tasks, String raw) throws CarlException {
+        String response = addTask(name, from, to, tasks, ui);
+
+        return CommandResult.success(response);
 
     }
 
-    private void addTask(String name, LocalDateTime from, LocalDateTime to, TaskList tasks, Ui ui) {
+    private String addTask(String name, LocalDateTime from, LocalDateTime to, TaskList tasks, Ui ui) {
         Task task = new Event(new Item(name), from, to);
         tasks.addTaskToList(task);
-        ui.showAddTask(task, tasks.getTasksLeft());
+        return ui.showAddTask(task, tasks.getTasksLeft());
     }
 
 }

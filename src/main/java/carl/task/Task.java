@@ -48,6 +48,7 @@ public class Task {
      * @return true if the task was successfully marked as done, false if it was already done.
      */
     public boolean markAsDone() {
+        System.out.println(this.status + " STATUS");
         if (this.status == TaskStatus.DONE) {
             return false;
         }

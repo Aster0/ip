@@ -1,9 +1,9 @@
 package carl.ui;
 
-import java.util.List;
 
-import carl.Carl;
+import java.util.List;
 import carl.task.Task;
+
 
 
 /**
@@ -17,26 +17,24 @@ public class Ui {
     /**
      * Displays the welcome message and banner to the user.
      */
-    public void showWelcome() {
-        String banner = "  ____    _    ____  _     \n" // Used Gemini to create this Ascii Banner
+    public String showWelcome() {
+        return "  ____    _    ____  _     \n" // Used Gemini to create this Ascii Banner
                 + " / ___|  / \\  |  _ \\| |    \n"
                 + "| |     / _ \\ | |_) | |    \n"
                 + "| |___ / ___ \\|  _ <| |___ \n"
-                + " \\____/_/   \\_\\_| \\_\\____|\n";
+                + " \\____/_/   \\_\\_| \\_\\____|\n" +
+                "" +
+                "" + SEPARATOR + "\n" +
+                "\"Hello there!  I am \" + Carl.BOT_NAME + \".\"" +
+                "\nWhat do you need help in?";
 
-
-        System.out.println(SEPARATOR);
-        System.out.println(banner);
-
-        System.out.println("Hello there!  I am " + Carl.BOT_NAME + ".");
-        System.out.println("What do you need help in?");
     }
 
     /**
      * Displays the goodbye message.
      */
-    public void showGoodbye() {
-        System.out.println("Bye bye! Hope to see you again soon!");
+    public String showGoodbye() {
+        return "Bye bye! Hope to see you again soon!";
     }
 
     /**
@@ -45,11 +43,10 @@ public class Ui {
      * @param task  The task that was added.
      * @param count The total number of tasks in the list.
      */
-    public void showAddTask(Task task, int count) {
+    public String showAddTask(Task task, int count) {
 
-        System.out.println(SEPARATOR);
-        System.out.println("Okay! I have added this task: \n  " + task + "\n" + tasksLeft(count));
-        System.out.println(SEPARATOR);
+        return SEPARATOR + "\n Okay! I have added this task: \n  "
+                + task + "\n" + tasksLeft(count) + "\n" + SEPARATOR;
     }
 
     private String tasksLeft(int count) {
@@ -61,8 +58,8 @@ public class Ui {
      *
      * @param task The task that was marked as done.
      */
-    public void showMarkTaskAsDone(Task task) {
-        System.out.println("Done! Task is marked as done!\n  " + task);
+    public String showMarkTaskAsDone(Task task) {
+        return "Done! Task is marked as done!\n  " + task;
     }
 
     /**
@@ -70,8 +67,8 @@ public class Ui {
      *
      * @param task The task that was unmarked.
      */
-    public void showUnMarkTask(Task task) {
-        System.out.println("Successfully unmarked this task as not done! \n  " + task);
+    public String showUnMarkTask(Task task) {
+        return "Successfully unmarked this task as not done! \n  " + task;
     }
 
     /**
@@ -80,8 +77,9 @@ public class Ui {
      * @param task  The task that was deleted.
      * @param count The remaining number of tasks in the list.
      */
-    public void showDeleteTask(Task task, int count) {
-        System.out.println("Successfully removed this task! \n  " + task + "\n" + tasksLeft(count));
+    public String showDeleteTask(Task task, int count) {
+
+        return "Successfully removed this task! \n  " + task + "\n" + tasksLeft(count);
     }
 
     /**
@@ -89,17 +87,19 @@ public class Ui {
      *
      * @param tasks The list of tasks to display.
      */
-    public void showTaskList(List<Task> tasks) {
+    public String showTaskList(List<Task> tasks) {
 
         int i = 1;
 
         if (tasks.isEmpty()) {
-            System.out.println("No tasks found.");
-            return;
+            return "No tasks found.";
         }
 
+        String message = "";
         for (Task task : tasks) {
-            System.out.println(i++ + ". " + task);
+            message += i++ + ". " + task + "\n";
         }
+
+        return message;
     }
 }

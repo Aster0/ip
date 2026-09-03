@@ -10,7 +10,16 @@ import carl.ui.Ui;
 /**
  * Represents a command to mark a task as not done in the task list.
  */
-public class UnmarkCommand extends ModifyTaskCommand {
+public class UnmarkCommand extends TargetedTaskCommand {
+
+    /**
+     * Constructs an {@code AddTaskCommand} with the specified task name.
+     *
+     * @param index index of the Task
+     */
+    public UnmarkCommand(int index) {
+        super(index);
+    }
 
     /**
      * {@inheritDoc}
@@ -19,22 +28,18 @@ public class UnmarkCommand extends ModifyTaskCommand {
      * @param ui      User interface for interacting with the user.
      * @param storage Task manager handling task data persistence.
      * @param tasks   List of current tasks.
-     * @param args    Arguments parsed from the user input.
      * @param raw     Raw input string entered by the user.
+     * @return
      * @throws CarlException If the task index is missing, invalid, or the task is already not done.
      */
     @Override
-    public void onRun(Ui ui, TaskManager storage, TaskList tasks, String[] args, String raw) throws CarlException {
+    public CommandResult execute(Ui ui, TaskManager storage, TaskList tasks, String raw) throws CarlException {
 
-        if (args.length < 2) {
-            throw new CarlCommandException("unmark <number> -"
-                    + " you can find the number from saying \"list\"!");
-        }
 
         // unmark x
-        int index = Integer.parseInt(args[1]);
+        System.out.println("unmarked");
         Task task = tasks.markTaskAsUndone(index - 1);
-        super.onRun(ui, storage, tasks, args, raw);
-        ui.showUnMarkTask(task);
+
+        return CommandResult.success(ui.showUnMarkTask(task));
     }
 }

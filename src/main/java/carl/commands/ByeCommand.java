@@ -13,15 +13,15 @@ public class ByeCommand implements Command {
      * {@inheritDoc}
      * Displays the farewell message to the user.
      *
-     * @param ui User interface for displaying messages.
+     * @param ui      User interface for displaying messages.
      * @param storage Task manager handling task data persistence.
-     * @param tasks List of current tasks.
-     * @param args Arguments parsed from the user input.
-     * @param raw Raw input string entered by the user.
+     * @param tasks   List of current tasks.
+     * @param raw     Raw input string entered by the user.
+     * @return
      */
     @Override
-    public void onRun(Ui ui, TaskManager storage, TaskList tasks, String[] args, String raw) {
-        ui.showGoodbye();
+    public CommandResult onRun(Ui ui, TaskManager storage, TaskList tasks, String raw) {
+        return CommandResult.error(ui.showGoodbye());
     }
 
     /**

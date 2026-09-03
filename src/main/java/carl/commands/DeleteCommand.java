@@ -10,32 +10,36 @@ import carl.ui.Ui;
 /**
  * Represents a command to delete an existing task from the task list.
  */
-public class DeleteCommand extends ModifyTaskCommand {
+public class DeleteCommand extends TargetedTaskCommand {
+
+    /**
+     * Constructs an {@code AddTaskCommand} with the specified task name.
+     *
+     * @param index index of the Task
+     */
+    public DeleteCommand(int index) {
+        super(index);
+    }
 
     /**
      * {@inheritDoc}
      * Deletes the specified task by its 1-based index, saves the updated list, and notifies the user.
      *
-     * @param ui User interface for interacting with the user.
+     * @param ui      User interface for interacting with the user.
      * @param storage Task manager handling task data persistence.
-     * @param tasks List of current tasks.
-     * @param args Arguments parsed from the user input.
-     * @param raw Raw input string entered by the user.
+     * @param tasks   List of current tasks.
+     * @param raw     Raw input string entered by the user.
+     * @return
      * @throws CarlException If the index argument is missing, invalid, or out of range.
      */
     @Override
-    public void onRun(Ui ui, TaskManager storage, TaskList tasks, String[] args, String raw) throws CarlException {
-        if (args.length < 2) {
-            throw new CarlCommandException("delete <number> -"
-                    + " you can find the number from saying \"list\"!");
-        }
+    public CommandResult execute(Ui ui, TaskManager storage, TaskList tasks, String raw) throws CarlException {
 
-        // mark x
-        int index = Integer.parseInt(args[1]);
+        // delete x
         Task task = tasks.deleteTask(index - 1);
-        ui.showDeleteTask(task, tasks.getTasksLeft());
 
-        super.onRun(ui, storage, tasks, args, raw);
+
+        return CommandResult.success(ui.showDeleteTask(task, tasks.getTasksLeft()));
 
 
     }
