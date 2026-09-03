@@ -8,7 +8,10 @@ import carl.ui.Ui;
 /**
  * Represents a base command for actions that modify tasks, ensuring changes are saved to storage.
  */
-public class ModifyTaskCommand implements Command {
+public abstract class ModifyTaskCommand implements Command {
+
+
+
     /**
      * {@inheritDoc}
      * Saves the current task list to storage after a task modification occurs.
@@ -16,12 +19,19 @@ public class ModifyTaskCommand implements Command {
      * @param ui      User interface for interacting with the user.
      * @param storage Task manager handling task data persistence.
      * @param tasks   List of current tasks.
-     * @param args    Arguments parsed from the user input.
      * @param raw     Raw input string entered by the user.
+     * @return
      * @throws CarlException If an error occurs during execution.
      */
     @Override
-    public void onRun(Ui ui, TaskManager storage, TaskList tasks, String[] args, String raw) throws CarlException {
+    public CommandResult onRun(Ui ui, TaskManager storage, TaskList tasks, String raw)
+            throws CarlException {
+        CommandResult commandResult = execute(ui, storage, tasks, raw);
         storage.saveAll(tasks);
+
+        return commandResult;
     }
+
+    public abstract CommandResult execute(Ui ui, TaskManager storage,
+                                          TaskList tasks, String raw) throws CarlException;
 }

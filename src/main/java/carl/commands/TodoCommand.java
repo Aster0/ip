@@ -30,15 +30,15 @@ public class TodoCommand extends AddTaskCommand {
      * @param ui      User interface for interacting with the user.
      * @param storage Task manager handling task data persistence.
      * @param tasks   List of current tasks.
-     * @param args    Arguments parsed from the user input.
      * @param raw     Raw input string entered by the user.
+     * @return
      * @throws CarlException If an error occurs during execution.
      */
     @Override
-    public void onRun(Ui ui, TaskManager storage, TaskList tasks, String[] args, String raw) throws CarlException {
+    public CommandResult execute(Ui ui, TaskManager storage, TaskList tasks, String raw) throws CarlException {
         Task task = new Todo(new Item(name));
         tasks.addTaskToList(task);
-        super.onRun(ui, storage, tasks, args, raw);
-        ui.showAddTask(task, tasks.getTasksLeft());
+
+        return CommandResult.success(ui.showAddTask(task, tasks.getTasksLeft()));
     }
 }

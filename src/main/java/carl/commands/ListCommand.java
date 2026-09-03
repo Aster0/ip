@@ -14,14 +14,14 @@ public class ListCommand implements Command {
      * {@inheritDoc}
      * Displays all existing tasks to the user.
      *
-     * @param ui User interface for interacting with the user.
+     * @param ui      User interface for interacting with the user.
      * @param storage Task manager handling task data persistence.
-     * @param tasks List of current tasks.
-     * @param args Arguments parsed from the user input.
-     * @param raw Raw input string entered by the user.
+     * @param tasks   List of current tasks.
+     * @param raw     Raw input string entered by the user.
+     * @return
      */
     @Override
-    public void onRun(Ui ui, TaskManager storage, TaskList tasks, String[] args, String raw) {
-        ui.showTaskList(tasks.getAllTasks());
+    public CommandResult onRun(Ui ui, TaskManager storage, TaskList tasks, String raw) {
+        return CommandResult.success(ui.showTaskList(tasks.getAllTasks()));
     }
 }

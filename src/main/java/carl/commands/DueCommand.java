@@ -14,34 +14,35 @@ import carl.util.DateParser;
  */
 public class DueCommand implements Command {
 
+
+    private String dateString;
+
+    public DueCommand(String dateString) {
+        this.dateString = dateString;
+    }
+
     /**
      * {@inheritDoc}
      * Lists all tasks due on the specified date, or today's date if no date is provided.
      *
-     * @param ui User interface for interacting with the user.
+     * @param ui      User interface for interacting with the user.
      * @param storage Task manager handling task data persistence.
-     * @param tasks List of current tasks.
-     * @param args Arguments parsed from the user input.
-     * @param raw Raw input string entered by the user.
+     * @param tasks   List of current tasks.
+     * @param raw     Raw input string entered by the user.
+     * @return
      * @throws CarlException If the provided date format is invalid.
      */
     @Override
-    public void onRun(Ui ui, TaskManager storage, TaskList tasks, String[] args, String raw) throws CarlException {
-        String dateString = LocalDate.now().toString();
-
-        if (args.length > 1) {
-            dateString = args[1];
-        }
-
+    public CommandResult onRun(Ui ui, TaskManager storage, TaskList tasks, String raw) throws CarlException {
         try {
             LocalDate date = DateParser.dateParserWithoutTime(dateString);
-
-            ui.showTaskList(tasks.getTasksDueOn(date));
+            return CommandResult.success(ui.showTaskList(tasks.getTasksDueOn(date)));
 
 
         } catch (DateTimeParseException e) {
             throw new CarlCommandException(DateParser.printDateErrorWithoutTime());
         }
+
     }
 
 }
