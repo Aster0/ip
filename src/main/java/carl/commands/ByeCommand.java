@@ -21,7 +21,7 @@ public class ByeCommand implements Command {
      */
     @Override
     public CommandResult onRun(Ui ui, TaskManager storage, TaskList tasks, String raw) {
-        return CommandResult.error(ui.showGoodbye());
+        return CommandResult.exit(ui.showGoodbye());
     }
 
     /**

@@ -1,8 +1,5 @@
 package carl;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
 
 import carl.commands.Command;
 import carl.commands.CommandResult;
@@ -21,9 +18,6 @@ public class Carl {
 
 
     public static final String BOT_NAME = "CARL";
-    private boolean isRunning = true;
-
-    private Map<String, Command> commands = new HashMap<>();
     private TaskManager taskManager;
     private TaskList tasks;
     private Ui ui;
@@ -38,53 +32,40 @@ public class Carl {
         Application.launch(MainApplication.class, args);
     }
 
-    public String getResponse(String input) {
+    /**
+     * Generates the welcome message for the user interface.
+     */
+    public String getWelcomeMessage() {
+        return ui.showWelcome();
+    }
+
+    /**
+     * Processes user input and returns the result of the executed command.
+     *
+     * @param input The raw input string entered by the user.
+     * @return The result of executing the parsed command, or an error result if parsing/execution fails.
+     */
+    public CommandResult getResponse(String input) {
         try {
             Command command = parser.parseCommands(input);
-            System.out.println("Parse");
 
-            return command.onRun(ui, taskManager, tasks, input).message();
+            return command.onRun(ui, taskManager, tasks, input);
 
         } catch (CarlException e) {
-            return e.getMessage();
+            return CommandResult.error(e.getMessage());
         }
     }
 
-
-
+    /**
+     * Initializes the core dependencies and services required for the chatbot to run.
+     */
     public void start() {
 
         ui = new Ui();
         taskManager = new TaskManager();
         tasks = new TaskList(taskManager.createSave());
 
-        ui.showWelcome();
-
         parser = new CarlParser();
-
-//        try (Scanner scanner = new Scanner(System.in)) {
-//            // added to make sure scanner closes (Closeable interface)
-//            // after try block
-//
-//
-//            while (isRunning) {
-//                String input = scanner.nextLine().trim();
-//
-//                try {
-//                    Command command = parser.parseCommands(input, ui, taskManager, tasks);
-//                    if (command.isExited()) {
-//                        stop();
-//                    }
-//                } catch (CarlException e) {
-//                    System.out.println(e.getMessage());
-//                }
-//
-//            }
-//        }
-    }
-
-    private void stop() {
-        this.isRunning = false;
     }
 
 
