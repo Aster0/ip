@@ -49,6 +49,10 @@ public class Carl {
         try {
             Command command = parser.parseCommands(input);
 
+            assert ui != null : "Ui instance should never be null";
+            assert taskManager != null : "Task Manager instance should never be null";
+            assert tasks != null : "Task List instance should never be null";
+
             return command.onRun(ui, taskManager, tasks, input);
 
         } catch (CarlException e) {
