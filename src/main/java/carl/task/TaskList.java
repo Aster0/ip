@@ -109,15 +109,17 @@ public class TaskList implements Comparator<Task>{
      */
     public List<Task> findTask(String keyword) {
 
-        List<Task> tasks = new ArrayList<>();
+        return tasks.stream().filter(task -> task.hasNameMatch(keyword)).toList();
 
-        for (Task task : this.tasks) {
-            if (task.hasNameMatch(keyword)) {
-                tasks.add(task);
-            }
-        }
-
-        return tasks;
+//        List<Task> tasks = new ArrayList<>();
+//
+//        for (Task task : this.tasks) {
+//            if (task.hasNameMatch(keyword)) {
+//                tasks.add(task);
+//            }
+//        }
+//
+//        return tasks;
     }
 
     /**

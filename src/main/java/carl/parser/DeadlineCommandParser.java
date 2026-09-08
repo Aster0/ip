@@ -38,11 +38,11 @@ public class DeadlineCommandParser implements Parser<DeadlineCommand> {
         }
 
         try {
-            LocalDateTime by = DateParser.dateParser(byStr);
+            LocalDateTime by = DateParser.parseDateTime(byStr);
             return new DeadlineCommand(name, by);
 
         } catch (DateTimeParseException e) {
-            throw new CarlCommandException(DateParser.printDateError());
+            throw new CarlCommandException(DateParser.getDateTimeErrorMessage());
         }
 
     }

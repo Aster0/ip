@@ -39,12 +39,12 @@ public class Deadline extends Task {
 
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + by.format(DateParser.dateFormatter()) + ")";
+        return "[D]" + super.toString() + " (by: " + by.format(DateParser.getDisplayFormatter()) + ")";
     }
 
     @Override
     public String toSaveFormat() {
-        return String.format("%s | %s", super.toSaveFormat(), by.format(DateParser.dateFormatterSave()));
+        return String.format("%s | %s", super.toSaveFormat(), by.format(DateParser.getStorageFormatter()));
     }
 
     @Override
