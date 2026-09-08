@@ -2,24 +2,25 @@ package carl.task;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 
 /**
  * Represents a generic task in the application.
  */
 public class Task {
-    protected Item item;
     protected TaskStatus status;
     protected TaskType type;
+    protected final String name;
 
     /**
      * Constructs a Task with the specified item and type.
      * The task is initialized as not done by default.
      *
-     * @param item The description or name of the task.
+     * @param name The description or name of the task.
      * @param type The type of the task (e.g., TODO, DEADLINE).
      */
-    public Task(Item item, TaskType type) {
-        this.item = item;
+    public Task(String name, TaskType type) {
+        this.name = name;
         this.status = TaskStatus.NOT_DONE;
         this.type = type;
     }
@@ -27,19 +28,19 @@ public class Task {
     /**
      * Constructs a Task with the specified item, status, and type.
      *
-     * @param item   The description or name of the task.
+     * @param name   The description or name of the task.
      * @param status The current completion status of the task.
      * @param type   The type of the task.
      */
-    public Task(Item item, TaskStatus status, TaskType type) {
-        this.item = item;
+    public Task(String name, TaskStatus status, TaskType type) {
+        this.name = name;
         this.status = status;
         this.type = type;
     }
 
     @Override
     public String toString() {
-        return String.format("%s %s", status, this.item);
+        return String.format("%s %s", status, this.name);
     }
 
     /**
@@ -77,7 +78,7 @@ public class Task {
      * @return The formatted string for file saving.
      */
     public String toSaveFormat() {
-        return String.format("%s | %d | %s", type, status.toInt(), item);
+        return String.format("%s | %d | %s", type, status.toInt(), name);
 
     }
 
@@ -89,9 +90,9 @@ public class Task {
      */
     public static Task of(TaskData data) {
         return switch (data.type) {
-            case TODO -> new Todo(data.item, data.status);
-            case EVENT -> new Event(data.item, data.status, data.from, data.to);
-            case DEADLINE -> new Deadline(data.item, data.status, data.from);
+            case TODO -> new Todo(data.name, data.status);
+            case EVENT -> new Event(data.name, data.status, data.from, data.to);
+            case DEADLINE -> new Deadline(data.name, data.status, data.from);
         };
     }
 
@@ -102,7 +103,7 @@ public class Task {
      * @return true if the name contains the keyword, false otherwise.
      */
     public boolean hasNameMatch(String keyword) {
-        return item.hasNameMatch(keyword);
+        return this.name.toLowerCase().contains(keyword.toLowerCase());
     }
 
     /**
@@ -132,7 +133,7 @@ public class Task {
      */
     public static class TaskData {
         private TaskType type;
-        private Item item;
+        private String name;
         private TaskStatus status;
         private LocalDateTime from;
         private LocalDateTime to;
@@ -142,13 +143,13 @@ public class Task {
          *
          * @param type   The type of the task.
          * @param status The completion status of the task.
-         * @param item   The description/item of the task.
+         * @param name   The description of the task.
          * @param from   The start or deadline time (if applicable).
          * @param to     The end time (if applicable).
          */
-        public TaskData(TaskType type, TaskStatus status, Item item, LocalDateTime from, LocalDateTime to) {
+        public TaskData(TaskType type, TaskStatus status, String name, LocalDateTime from, LocalDateTime to) {
             this.type = type;
-            this.item = item;
+            this.name = name;
             this.status = status;
             this.from = from;
             this.to = to;

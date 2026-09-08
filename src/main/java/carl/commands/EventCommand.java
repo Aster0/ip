@@ -51,7 +51,7 @@ public class EventCommand extends AddTaskCommand {
     }
 
     private String addTask(String name, LocalDateTime from, LocalDateTime to, TaskList tasks, Ui ui) {
-        Task task = new Event(new Item(name), from, to);
+        Task task = new Event(name, from, to);
         tasks.addTaskToList(task);
         return ui.showAddTask(task, tasks.getTasksLeft());
     }

@@ -36,7 +36,7 @@ public class TodoCommand extends AddTaskCommand {
      */
     @Override
     public CommandResult execute(Ui ui, TaskManager storage, TaskList tasks, String raw) throws CarlException {
-        Task task = new Todo(new Item(name));
+        Task task = new Todo(name);
         tasks.addTaskToList(task);
 
         return CommandResult.success(ui.showAddTask(task, tasks.getTasksLeft()));

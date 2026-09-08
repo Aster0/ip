@@ -2,6 +2,7 @@ package carl.task;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import carl.exceptions.CarlCommandException;
@@ -11,7 +12,7 @@ import carl.exceptions.CarlUnknownTaskException;
 /**
  * Represents a list of tasks and provides operations to manage them.
  */
-public class TaskList {
+public class TaskList implements Comparator<Task>{
 
     private List<Task> tasks;
     /**
@@ -23,6 +24,11 @@ public class TaskList {
         this.tasks = tasks;
     }
 
+
+    @Override
+    public int compare(Task t1, Task t2) {
+        return t1.name.compareTo(t2.name);
+    }
 
     /**
      * Adds a task to the task list.
@@ -83,6 +89,14 @@ public class TaskList {
                 tasks.add(task);
             }
         }
+
+        return tasks;
+    }
+
+    public List<Task> getSortedTasks() {
+
+        List<Task> tasks = new ArrayList<>(this.tasks);
+        tasks.sort(this);
 
         return tasks;
     }
