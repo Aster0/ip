@@ -35,12 +35,12 @@ public class DueCommand implements Command {
     @Override
     public CommandResult onRun(Ui ui, TaskManager storage, TaskList tasks, String raw) throws CarlException {
         try {
-            LocalDate date = DateParser.dateParserWithoutTime(dateString);
+            LocalDate date = DateParser.parseDate(dateString);
             return CommandResult.success(ui.showTaskList(tasks.getTasksDueOn(date)));
 
 
         } catch (DateTimeParseException e) {
-            throw new CarlCommandException(DateParser.printDateErrorWithoutTime());
+            throw new CarlCommandException(DateParser.getDateErrorMessage());
         }
 
     }

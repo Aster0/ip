@@ -34,8 +34,8 @@ public class EventCommandParser implements Parser<EventCommand> {
         }
 
         try {
-            LocalDateTime from = DateParser.dateParser(fromStr);
-            LocalDateTime to = DateParser.dateParser(toStr);
+            LocalDateTime from = DateParser.parseDateTime(fromStr);
+            LocalDateTime to = DateParser.parseDateTime(toStr);
 
             if (from.isAfter(to)) {
                 throw new CarlCommandException("The event start date cannot be after the end date.");
@@ -44,7 +44,7 @@ public class EventCommandParser implements Parser<EventCommand> {
             return new EventCommand(name, from, to);
 
         } catch (DateTimeParseException e) {
-            throw new CarlCommandException(DateParser.printDateError());
+            throw new CarlCommandException(DateParser.getDateTimeErrorMessage());
         }
     }
 
