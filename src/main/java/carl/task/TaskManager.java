@@ -68,7 +68,7 @@ public class TaskManager {
     private LocalDateTime parseStringToDate(String date) {
         LocalDateTime time;
         try {
-            time = DateParser.dateParser(date);
+            time = DateParser.parseDateTime(date);
         } catch (DateTimeParseException e) {
             time = LocalDateTime.now();
         }

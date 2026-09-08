@@ -11,6 +11,10 @@ import java.time.format.DateTimeParseException;
  */
 public class DateParser {
 
+    private DateParser() {
+
+    }
+    
     /**
      * Parses a string into a LocalDateTime object.
      *
@@ -18,7 +22,7 @@ public class DateParser {
      * @return The parsed LocalDateTime object.
      * @throws DateTimeParseException If the string cannot be parsed into a valid date and time.
      */
-    public static LocalDateTime dateParser(String strDate) throws DateTimeParseException {
+    public static LocalDateTime parseDateTime(String strDate) throws DateTimeParseException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
         return LocalDateTime.parse(strDate, formatter);
 
@@ -31,7 +35,7 @@ public class DateParser {
      * @return The parsed LocalDate object.
      * @throws DateTimeParseException If the string cannot be parsed into a valid date.
      */
-    public static LocalDate dateParserWithoutTime(String strDate) throws DateTimeParseException {
+    public static LocalDate parseDate(String strDate) throws DateTimeParseException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return LocalDate.parse(strDate, formatter);
 
@@ -42,7 +46,7 @@ public class DateParser {
      *
      * @return The error message string.
      */
-    public static String printDateError() {
+    public static String getDateTimeErrorMessage() {
         return "Invalid date inputted! Correct format: \"yyyy-MM-dd HHmm\", e.g., \"2026-12-24 1800\"";
     }
 
@@ -51,7 +55,7 @@ public class DateParser {
      *
      * @return The error message string.
      */
-    public static String printDateErrorWithoutTime() {
+    public static String getDateErrorMessage() {
         return "Invalid date inputted! Correct format: \"yyyy-MM-dd\", e.g., \"2026-12-24\"";
     }
 
@@ -60,7 +64,7 @@ public class DateParser {
      *
      * @return A DateTimeFormatter with the pattern "MMM dd yyyy, h:mm a".
      */
-    public static DateTimeFormatter dateFormatter() {
+    public static DateTimeFormatter getDisplayFormatter() {
         return DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
     }
 
@@ -69,7 +73,7 @@ public class DateParser {
      *
      * @return A DateTimeFormatter with the pattern "yyyy-MM-dd HHmm".
      */
-    public static DateTimeFormatter dateFormatterSave() {
+    public static DateTimeFormatter getStorageFormatter() {
         return DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
     }
 }

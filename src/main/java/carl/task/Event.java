@@ -44,14 +44,14 @@ public class Event extends Task {
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + from.format(DateParser.dateFormatter())
-                + " to: " + to.format(DateParser.dateFormatter()) + ")";
+        return "[E]" + super.toString() + " (from: " + from.format(DateParser.getDisplayFormatter())
+                + " to: " + to.format(DateParser.getDisplayFormatter()) + ")";
     }
 
     @Override
     public String toSaveFormat() {
-        return String.format("%s | %s | %s", super.toSaveFormat(), from.format(DateParser.dateFormatterSave()),
-                to.format(DateParser.dateFormatterSave()));
+        return String.format("%s | %s | %s", super.toSaveFormat(), from.format(DateParser.getStorageFormatter()),
+                to.format(DateParser.getStorageFormatter()));
     }
 
     @Override
