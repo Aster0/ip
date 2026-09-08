@@ -49,7 +49,7 @@ public class TaskManager {
 
     private Task parseStringToTask(String[] args) {
         // prefix | status | name | by | to
-        Item item = new Item(args[2]);
+        String name = args[2];
         String from = args.length > 3 ? args[3] : "Not Indicated";
         String to = args.length > 4 ? args[4] : "Not Indicated";
         LocalDateTime timeFrom;
@@ -60,7 +60,7 @@ public class TaskManager {
 
         Task.TaskData data = new Task.TaskData(TaskType.of(args[0]),
                 args[1].equals("1") ? TaskStatus.DONE : TaskStatus.NOT_DONE,
-                item, timeFrom, timeTo);
+                name, timeFrom, timeTo);
 
         return Task.of(data);
     }

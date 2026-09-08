@@ -17,12 +17,12 @@ public class Event extends Task {
      * Constructs a new Event task with the specified item, start time, and end time.
      * The task status is initialized to NOT_DONE by default.
      *
-     * @param item The description or name of the event.
+     * @param name The description or name of the event.
      * @param from The starting date and time of the event.
      * @param to   The ending date and time of the event.
      */
-    public Event(Item item, LocalDateTime from, LocalDateTime to) {
-        super(item, TaskType.EVENT);
+    public Event(String name, LocalDateTime from, LocalDateTime to) {
+        super(name, TaskType.EVENT);
         this.from = from;
         this.to = to;
     }
@@ -31,13 +31,13 @@ public class Event extends Task {
      * Constructs an Event task with a specified completion status.
      * This is typically used when loading tasks from a saved file.
      *
-     * @param item   The description or name of the event.
+     * @param name   The description or name of the event.
      * @param status The completion status of the event.
      * @param from   The starting date and time of the event.
      * @param to     The ending date and time of the event.
      */
-    public Event(Item item, TaskStatus status, LocalDateTime from, LocalDateTime to) {
-        super(item, status, TaskType.EVENT);
+    public Event(String name, TaskStatus status, LocalDateTime from, LocalDateTime to) {
+        super(name, status, TaskType.EVENT);
         this.from = from;
         this.to = to;
     }

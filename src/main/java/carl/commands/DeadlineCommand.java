@@ -45,7 +45,7 @@ public class DeadlineCommand extends AddTaskCommand {
     public CommandResult execute(Ui ui, TaskManager storage, TaskList tasks, String raw)
             throws CarlException {
 
-        Task task = new Deadline(new Item(name), by);
+        Task task = new Deadline(name, by);
         tasks.addTaskToList(task);
 
 

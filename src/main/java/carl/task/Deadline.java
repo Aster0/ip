@@ -16,11 +16,11 @@ public class Deadline extends Task {
      * Constructs a new Deadline task with the specified item and deadline.
      * The task status is initialized to NOT_DONE by default.
      *
-     * @param item The description or name of the task.
+     * @param name The description or name of the task.
      * @param by   The date and time the task is due.
      */
-    public Deadline(Item item, LocalDateTime by) {
-        super(item, TaskType.DEADLINE);
+    public Deadline(String name, LocalDateTime by) {
+        super(name, TaskType.DEADLINE);
         this.by = by;
     }
 
@@ -28,12 +28,12 @@ public class Deadline extends Task {
      * Constructs a Deadline task with a specified completion status.
      * This is typically used when loading tasks from a saved file.
      *
-     * @param item   The description or name of the task.
+     * @param name   The description or name of the task.
      * @param status The completion status of the task.
      * @param by     The date and time the task is due.
      */
-    public Deadline(Item item, TaskStatus status, LocalDateTime by) {
-        super(item, status, TaskType.DEADLINE);
+    public Deadline(String name, TaskStatus status, LocalDateTime by) {
+        super(name, status, TaskType.DEADLINE);
         this.by = by;
     }
 

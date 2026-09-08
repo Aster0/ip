@@ -3,12 +3,7 @@ package carl.parser;
 import java.util.HashMap;
 import java.util.Map;
 
-import carl.commands.ByeCommand;
-import carl.commands.Command;
-import carl.commands.DeleteCommand;
-import carl.commands.ListCommand;
-import carl.commands.MarkCommand;
-import carl.commands.UnmarkCommand;
+import carl.commands.*;
 import carl.exceptions.CarlException;
 import carl.exceptions.CarlUnknownCommandException;
 
@@ -32,6 +27,7 @@ public class CarlParser {
         commands.put("delete", new TaskIndexParser<Command>(DeleteCommand::new));
         commands.put("due", new DueCommandParser());
         commands.put("find", new FindCommandParser());
+        commands.put("sort", (a) -> new SortCommand());
     }
 
     /**
