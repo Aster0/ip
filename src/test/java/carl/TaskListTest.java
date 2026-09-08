@@ -34,17 +34,17 @@ public class TaskListTest {
     @Test
     public void getAllTasks_multipleTasksAdded_returnsAllTasksInOrder() {
 
-        Deadline deadline = new Deadline(new Item("Deadline 1"),
+        Deadline deadline = new Deadline("Deadline 1",
                 LocalDateTime.of(LocalDate.of(2026, 8, 26),
                         LocalTime.of(18, 1)));
 
-        Event event = new Event(new Item("Event 1"),
+        Event event = new Event("Event 1",
                 LocalDateTime.of(LocalDate.of(2026, 8, 26),
                         LocalTime.of(18, 1)),
                 LocalDateTime.of(LocalDate.of(2026, 8, 29),
                         LocalTime.of(18, 1)));
 
-        Todo todo = new Todo(new Item("Todo 1"));
+        Todo todo = new Todo("Todo 1");
 
         List<Task> matchList = List.of(deadline, event, todo);
 
@@ -62,23 +62,23 @@ public class TaskListTest {
     @Test
     public void getTasksDueOn_mixedDates_returnsOnlyMatchingTasks() {
 
-        Deadline deadline = new Deadline(new Item("Deadline 1"),
+        Deadline deadline = new Deadline("Deadline 1",
                 LocalDateTime.of(LocalDate.of(2026, 8, 26),
                         LocalTime.of(18, 1)));
 
-        Event event = new Event(new Item("Event 1"),
+        Event event = new Event("Event 1",
                 LocalDateTime.of(LocalDate.of(2026, 8, 26),
                         LocalTime.of(18, 1)),
                 LocalDateTime.of(LocalDate.of(2026, 8, 29),
                         LocalTime.of(18, 1)));
 
-        Event event2 = new Event(new Item("Event 2"),
+        Event event2 = new Event("Event 2",
                 LocalDateTime.of(LocalDate.of(2026, 8, 24),
                         LocalTime.of(18, 1)),
                 LocalDateTime.of(LocalDate.of(2026, 8, 30),
                         LocalTime.of(18, 1)));
 
-        Deadline deadline2 = new Deadline(new Item("Deadline 2"),
+        Deadline deadline2 = new Deadline("Deadline 2",
                 LocalDateTime.of(LocalDate.of(2026, 8, 29),
                         LocalTime.of(18, 1)));
 
