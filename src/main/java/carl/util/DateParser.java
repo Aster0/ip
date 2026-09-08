@@ -11,6 +11,10 @@ import java.time.format.DateTimeParseException;
  */
 public class DateParser {
 
+    private DateParser() {
+
+    }
+    
     /**
      * Parses a string into a LocalDateTime object.
      *
