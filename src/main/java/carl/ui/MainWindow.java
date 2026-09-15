@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
@@ -30,9 +29,6 @@ public class MainWindow extends AnchorPane {
 
     private Carl bot;
 
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/user.jpg"));
-    private Image botImage = new Image(this.getClass().getResourceAsStream("/images/user.jpg"));
-
     /**
      * Sets the instance of Carl to be used by the controller and displays the welcome message.
      *
@@ -41,6 +37,7 @@ public class MainWindow extends AnchorPane {
     public void setCarl(Carl carl) {
         this.bot = carl;
         addMessage(bot.getWelcomeMessage());
+        userInput.requestFocus();
     }
     /**
      * Initializes the controller after its root element has been completely processed.
@@ -48,14 +45,12 @@ public class MainWindow extends AnchorPane {
      */
     @FXML
     public void initialize() {
-        scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
-
+        dialogContainer.heightProperty().addListener((observable, oldHeight, newHeight) ->
+                scrollPane.setVvalue(1.0));
     }
 
     private void addMessage(String message) {
-        dialogContainer.getChildren().addAll(
-                DialogBox.getBotDialog(message, botImage)
-        );
+        dialogContainer.getChildren().add(DialogBox.getBotDialog(message));
     }
 
     @FXML
@@ -69,12 +64,14 @@ public class MainWindow extends AnchorPane {
 
         CommandResult commandResult = bot.getResponse(userText);
 
-        dialogContainer.getChildren().addAll(
-                DialogBox.getUserDialog(userText, userImage),
-                DialogBox.getBotDialog(commandResult.message(), botImage)
-        );
+        DialogBox response = commandResult.isError()
+                ? DialogBox.getErrorDialog(commandResult.message())
+                : DialogBox.getBotDialog(commandResult.message());
+
+        dialogContainer.getChildren().addAll(DialogBox.getUserDialog(userText), response);
 
         userInput.clear();
+        userInput.requestFocus();
 
         if (commandResult.isExited()) {
             PauseTransition delay = new PauseTransition(Duration.seconds(1.2));
