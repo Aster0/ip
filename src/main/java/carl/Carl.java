@@ -1,6 +1,8 @@
 package carl;
 
 
+import java.util.Objects;
+
 import carl.commands.Command;
 import carl.commands.CommandResult;
 import carl.exceptions.CarlException;
@@ -23,6 +25,16 @@ public class Carl {
     private Ui ui;
     private CarlParser parser;
     private String startupWarning;
+
+    /** Creates Carl with the default local task storage. */
+    public Carl() {
+        this(new TaskManager());
+    }
+
+    /** Creates Carl with injected storage so core behavior can be tested in isolation. */
+    Carl(TaskManager taskManager) {
+        this.taskManager = Objects.requireNonNull(taskManager);
+    }
 
     /**
      * Main method to launch the Carl application.
@@ -69,7 +81,6 @@ public class Carl {
     public void start() {
 
         ui = new Ui();
-        taskManager = new TaskManager();
         tasks = new TaskList(taskManager.createSave());
         startupWarning = taskManager.getStartupWarning();
 

@@ -37,6 +37,9 @@ public class TaskList implements Comparator<Task> {
      * @throws CarlCommandException If a task with the same details already exists.
      */
     public void addTaskToList(Task task) throws CarlCommandException {
+        if (task == null) {
+            throw new CarlCommandException("A task cannot be empty.");
+        }
         if (tasks.stream().anyMatch(existingTask -> existingTask.hasSameDetails(task))) {
             throw new CarlCommandException("A task with the same details already exists.");
         }

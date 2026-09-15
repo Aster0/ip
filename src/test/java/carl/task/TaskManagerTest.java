@@ -3,6 +3,7 @@ package carl.task;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -31,7 +32,27 @@ public class TaskManagerTest {
 
         assertTrue(Files.exists(saveFile));
         assertTrue(tasks.isEmpty());
-        assertEquals(null, manager.getStartupWarning());
+        assertNull(manager.getStartupWarning());
+    }
+
+    @Test
+    public void loadSave_allValidTaskTypesAndStatuses_restoresExactData() throws Exception {
+        Path saveFile = temporaryDirectory.resolve("save.txt");
+        Files.writeString(saveFile, """
+                T | 1 | completed todo
+                D | 0 | pending deadline | 2026-10-01 1800
+                E | 1 | completed event | 2026-10-01 1800 | 2026-10-01 1900
+                """, StandardCharsets.UTF_8);
+        TaskManager manager = new TaskManager(saveFile);
+
+        List<Task> tasks = manager.loadSave();
+
+        assertEquals(List.of(
+                "T | 1 | completed todo",
+                "D | 0 | pending deadline | 2026-10-01 1800",
+                "E | 1 | completed event | 2026-10-01 1800 | 2026-10-01 1900"),
+                tasks.stream().map(Task::toSaveFormat).toList());
+        assertNull(manager.getStartupWarning());
     }
 
     @Test
@@ -53,6 +74,45 @@ public class TaskManagerTest {
     }
 
     @Test
+    public void loadSave_invalidTypesStatusesAndFieldCounts_skipsEveryInvalidLine() throws Exception {
+        Path saveFile = temporaryDirectory.resolve("save.txt");
+        Files.writeString(saveFile, """
+                X | 0 | unknown type
+                T | 2 | unknown status
+                T | 0
+                T | 0 | name | extra
+                D | 0 | missing date
+                E | 0 | missing end | 2026-10-01 1800
+                """, StandardCharsets.UTF_8);
+        TaskManager manager = new TaskManager(saveFile);
+
+        List<Task> tasks = manager.loadSave();
+
+        assertTrue(tasks.isEmpty());
+        assertTrue(manager.getStartupWarning().contains("[1, 2, 3, 4, 5, 6]"));
+    }
+
+    @Test
+    public void loadSave_missingFile_returnsEmptyListAndWarning() {
+        TaskManager manager = new TaskManager(temporaryDirectory.resolve("missing.txt"));
+
+        List<Task> tasks = manager.loadSave();
+
+        assertTrue(tasks.isEmpty());
+        assertTrue(manager.getStartupWarning().contains("could not read"));
+    }
+
+    @Test
+    public void createSave_pathIsExistingDirectory_returnsEmptyListAndWarning() {
+        TaskManager manager = new TaskManager(temporaryDirectory);
+
+        List<Task> tasks = manager.createSave();
+
+        assertTrue(tasks.isEmpty());
+        assertNotNull(manager.getStartupWarning());
+    }
+
+    @Test
     public void saveAll_validTaskList_replacesFile() throws Exception {
         Path saveFile = temporaryDirectory.resolve("save.txt");
         TaskManager manager = new TaskManager(saveFile);
@@ -62,6 +122,16 @@ public class TaskManagerTest {
 
         assertEquals(tasks.toSaveString(), Files.readString(saveFile, StandardCharsets.UTF_8));
         assertFalse(Files.readString(saveFile, StandardCharsets.UTF_8).isBlank());
+    }
+
+    @Test
+    public void saveAll_emptyTaskList_writesEmptyFile() throws Exception {
+        Path saveFile = temporaryDirectory.resolve("save.txt");
+        TaskManager manager = new TaskManager(saveFile);
+
+        manager.saveAll(new TaskList(List.of()));
+
+        assertEquals("", Files.readString(saveFile, StandardCharsets.UTF_8));
     }
 
     @Test
@@ -81,5 +151,10 @@ public class TaskManagerTest {
         assertThrows(CarlStorageException.class, () ->
                 command.onRun(new Ui(), manager, tasks, "todo write tests"));
         assertTrue(tasks.getAllTasks().isEmpty());
+    }
+
+    @Test
+    public void constructor_nullPath_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> new TaskManager(null));
     }
 }
