@@ -12,7 +12,7 @@ import carl.exceptions.CarlUnknownTaskException;
 /**
  * Represents a list of tasks and provides operations to manage them.
  */
-public class TaskList implements Comparator<Task>{
+public class TaskList implements Comparator<Task> {
 
     private List<Task> tasks;
     /**
@@ -21,7 +21,7 @@ public class TaskList implements Comparator<Task>{
      * @param tasks The initial list of tasks.
      */
     public TaskList(List<Task> tasks) {
-        this.tasks = tasks;
+        this.tasks = new ArrayList<>(tasks);
     }
 
 
@@ -34,8 +34,12 @@ public class TaskList implements Comparator<Task>{
      * Adds a task to the task list.
      *
      * @param task The task to be added.
+     * @throws CarlCommandException If a task with the same details already exists.
      */
-    public void addTaskToList(Task task) {
+    public void addTaskToList(Task task) throws CarlCommandException {
+        if (tasks.stream().anyMatch(existingTask -> existingTask.hasSameDetails(task))) {
+            throw new CarlCommandException("A task with the same details already exists.");
+        }
         tasks.add(task);
     }
 
@@ -54,6 +58,29 @@ public class TaskList implements Comparator<Task>{
         }
 
         return sb.toString();
+    }
+
+    /**
+     * Captures task order and completion states so a failed save can be rolled back safely.
+     *
+     * @return an opaque snapshot of the current list state
+     */
+    public Snapshot createSnapshot() {
+        List<Task> taskCopies = new ArrayList<>(tasks);
+        List<TaskStatus> statuses = tasks.stream().map(task -> task.status).toList();
+        return new Snapshot(taskCopies, statuses);
+    }
+
+    /**
+     * Restores a snapshot after a task-changing command fails.
+     *
+     * @param snapshot previously captured list state
+     */
+    public void restore(Snapshot snapshot) {
+        tasks = new ArrayList<>(snapshot.tasks);
+        for (int i = 0; i < tasks.size(); i++) {
+            tasks.get(i).status = snapshot.statuses.get(i);
+        }
     }
     /**
      * Gets the number of tasks currently in the list.
@@ -110,16 +137,6 @@ public class TaskList implements Comparator<Task>{
     public List<Task> findTask(String keyword) {
 
         return tasks.stream().filter(task -> task.hasNameMatch(keyword)).toList();
-
-//        List<Task> tasks = new ArrayList<>();
-//
-//        for (Task task : this.tasks) {
-//            if (task.hasNameMatch(keyword)) {
-//                tasks.add(task);
-//            }
-//        }
-//
-//        return tasks;
     }
 
     /**
@@ -132,13 +149,13 @@ public class TaskList implements Comparator<Task>{
     public Task markTaskAsDone(int index) throws CarlCommandException {
 
         if (index < 0 || index >= tasks.size()) {
-            throw new CarlCommandException("Invalid task number! Check \"list\"!");
+            throw new CarlCommandException("That task number does not exist. Use `list` to check task numbers.");
         }
 
         Task task = tasks.get(index);
 
         if (!task.markAsDone()) {
-            throw new CarlCommandException("Task is already marked as done, cannot be marked again!");
+            throw new CarlCommandException("That task is already completed.");
         }
 
 
@@ -155,7 +172,7 @@ public class TaskList implements Comparator<Task>{
      */
     public Task deleteTask(int index) throws CarlException {
 
-        if (index >= tasks.size()) {
+        if (index < 0 || index >= tasks.size()) {
             throw new CarlUnknownTaskException();
         }
 
@@ -181,19 +198,27 @@ public class TaskList implements Comparator<Task>{
     public Task markTaskAsUndone(int index) throws CarlCommandException {
 
         if (index < 0 || index >= tasks.size()) {
-            throw new CarlCommandException("Invalid task number! Check \"list\"!");
+            throw new CarlCommandException("That task number does not exist. Use `list` to check task numbers.");
         }
 
         Task task = tasks.get(index);
 
         if (!task.unMarkAsDone()) {
 
-            throw new CarlCommandException("Task is already not done, cannot be unmarked!");
+            throw new CarlCommandException("That task is already incomplete.");
         }
 
         return task;
+    }
 
+    /** Stores task references and their mutable completion states for rollback. */
+    public static final class Snapshot {
+        private final List<Task> tasks;
+        private final List<TaskStatus> statuses;
 
-
+        private Snapshot(List<Task> tasks, List<TaskStatus> statuses) {
+            this.tasks = tasks;
+            this.statuses = statuses;
+        }
     }
 }

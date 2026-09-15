@@ -1,13 +1,13 @@
 package carl.parser;
 
 import carl.commands.TodoCommand;
-import carl.exceptions.CarlCommandException;
 import carl.exceptions.CarlException;
 
 /**
  * Parses input arguments and creates a new TodoCommand object.
  */
 public class TodoCommandParser implements Parser<TodoCommand> {
+    private static final String USAGE = "todo <description>";
 
     /**
      * Parses the given input string to extract the todo task description.
@@ -18,11 +18,6 @@ public class TodoCommandParser implements Parser<TodoCommand> {
      */
     @Override
     public TodoCommand parse(String input) throws CarlException {
-
-        if (input.isEmpty()) {
-            throw new CarlCommandException("todo <project_name>");
-        }
-
-        return new TodoCommand(input);
+        return new TodoCommand(InputValidator.normalizeTaskName(input, USAGE));
     }
 }

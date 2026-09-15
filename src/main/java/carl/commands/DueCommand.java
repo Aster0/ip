@@ -1,24 +1,24 @@
 package carl.commands;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 
-import carl.exceptions.CarlCommandException;
 import carl.exceptions.CarlException;
 import carl.task.TaskList;
 import carl.task.TaskManager;
 import carl.ui.Ui;
-import carl.util.DateParser;
 /**
  * Represents a command to find and list tasks due on a specific date.
  */
 public class DueCommand implements Command {
+    private final LocalDate date;
 
-
-    private String dateString;
-
-    public DueCommand(String dateString) {
-        this.dateString = dateString;
+    /**
+     * Creates a command that lists tasks occurring on the specified date.
+     *
+     * @param date date to query
+     */
+    public DueCommand(LocalDate date) {
+        this.date = date;
     }
 
     /**
@@ -34,15 +34,6 @@ public class DueCommand implements Command {
      */
     @Override
     public CommandResult onRun(Ui ui, TaskManager storage, TaskList tasks, String raw) throws CarlException {
-        try {
-            LocalDate date = DateParser.parseDate(dateString);
-            return CommandResult.success(ui.showTaskList(tasks.getTasksDueOn(date)));
-
-
-        } catch (DateTimeParseException e) {
-            throw new CarlCommandException(DateParser.getDateErrorMessage());
-        }
-
+        return CommandResult.success(ui.showTaskList(tasks.getTasksDueOn(date)));
     }
-
 }

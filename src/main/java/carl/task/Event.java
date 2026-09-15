@@ -55,9 +55,13 @@ public class Event extends Task {
     }
 
     @Override
+    protected String getIdentity() {
+        return super.getIdentity() + "|" + from + "|" + to;
+    }
+
+    @Override
     protected boolean isOnDate(LocalDate targetDate) {
         return !targetDate.isBefore(this.from.toLocalDate())
                 && !targetDate.isAfter(this.to.toLocalDate());
     }
 }
-

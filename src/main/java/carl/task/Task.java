@@ -2,7 +2,8 @@ package carl.task;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Comparator;
+import java.util.Locale;
+import java.util.Objects;
 
 /**
  * Represents a generic task in the application.
@@ -20,9 +21,9 @@ public class Task {
      * @param type The type of the task (e.g., TODO, DEADLINE).
      */
     public Task(String name, TaskType type) {
-        this.name = name;
+        this.name = Objects.requireNonNull(name).strip();
         this.status = TaskStatus.NOT_DONE;
-        this.type = type;
+        this.type = Objects.requireNonNull(type);
     }
 
     /**
@@ -33,9 +34,9 @@ public class Task {
      * @param type   The type of the task.
      */
     public Task(String name, TaskStatus status, TaskType type) {
-        this.name = name;
-        this.status = status;
-        this.type = type;
+        this.name = Objects.requireNonNull(name).strip();
+        this.status = Objects.requireNonNull(status);
+        this.type = Objects.requireNonNull(type);
     }
 
     @Override
@@ -49,7 +50,6 @@ public class Task {
      * @return true if the task was successfully marked as done, false if it was already done.
      */
     public boolean markAsDone() {
-        System.out.println(this.status + " STATUS");
         if (this.status == TaskStatus.DONE) {
             return false;
         }
@@ -103,7 +103,22 @@ public class Task {
      * @return true if the name contains the keyword, false otherwise.
      */
     public boolean hasNameMatch(String keyword) {
-        return this.name.toLowerCase().contains(keyword.toLowerCase());
+        return this.name.toLowerCase(Locale.ROOT).contains(keyword.toLowerCase(Locale.ROOT));
+    }
+
+    /**
+     * Checks whether another task contains the same user-defined details, ignoring completion status.
+     *
+     * @param other task to compare against
+     * @return true when the tasks represent the same task details
+     */
+    public boolean hasSameDetails(Task other) {
+        return other != null && getIdentity().equals(other.getIdentity());
+    }
+
+    /** Returns a normalized identity used to detect duplicate task details. */
+    protected String getIdentity() {
+        return type + "|" + name.toLowerCase(Locale.ROOT);
     }
 
     /**

@@ -11,6 +11,6 @@ public class CarlUnknownTaskException extends CarlException {
      * prompting the user to check the valid list of tasks.
      */
     public CarlUnknownTaskException() {
-        super("You tried to delete a task number that do not exist :( Try again. Look at list for the list of tasks!");
+        super("That task number does not exist. Use `list` to check task numbers.");
     }
 }

@@ -37,6 +37,9 @@ public class MainWindow extends AnchorPane {
     public void setCarl(Carl carl) {
         this.bot = carl;
         addMessage(bot.getWelcomeMessage());
+        if (bot.getStartupWarning() != null) {
+            dialogContainer.getChildren().add(DialogBox.getErrorDialog(bot.getStartupWarning()));
+        }
         userInput.requestFocus();
     }
     /**

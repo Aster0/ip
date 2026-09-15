@@ -33,10 +33,6 @@ public class UnmarkCommand extends TargetedTaskCommand {
      */
     @Override
     public CommandResult execute(Ui ui, TaskManager storage, TaskList tasks, String raw) throws CarlException {
-
-
-        // unmark x
-        System.out.println("unmarked");
         Task task = tasks.markTaskAsUndone(index - 1);
 
         return CommandResult.success(ui.showUnMarkTask(task));

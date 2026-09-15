@@ -2,6 +2,7 @@ package carl;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,9 +13,10 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import carl.exceptions.CarlCommandException;
+import carl.exceptions.CarlException;
 import carl.task.Deadline;
 import carl.task.Event;
-import carl.task.Item;
 import carl.task.Task;
 import carl.task.TaskList;
 import carl.task.Todo;
@@ -32,7 +34,7 @@ public class TaskListTest {
     // https://www.baeldung.com/java-unit-testing-best-practices
 
     @Test
-    public void getAllTasks_multipleTasksAdded_returnsAllTasksInOrder() {
+    public void getAllTasks_multipleTasksAdded_returnsAllTasksInOrder() throws CarlCommandException {
 
         Deadline deadline = new Deadline("Deadline 1",
                 LocalDateTime.of(LocalDate.of(2026, 8, 26),
@@ -60,7 +62,7 @@ public class TaskListTest {
     }
 
     @Test
-    public void getTasksDueOn_mixedDates_returnsOnlyMatchingTasks() {
+    public void getTasksDueOn_mixedDates_returnsOnlyMatchingTasks() throws CarlCommandException {
 
         Deadline deadline = new Deadline("Deadline 1",
                 LocalDateTime.of(LocalDate.of(2026, 8, 26),
@@ -94,6 +96,19 @@ public class TaskListTest {
         assertEquals(3, result.size());
         assertEquals(matchList, result);
 
+    }
+
+    @Test
+    public void addTaskToList_sameDetailsAlreadyPresent_throwsCommandException() throws CarlCommandException {
+        taskList.addTaskToList(new Todo("submit report"));
+
+        assertThrows(CarlCommandException.class, () ->
+                taskList.addTaskToList(new Todo("Submit Report")));
+    }
+
+    @Test
+    public void deleteTask_negativeIndex_throwsCarlException() {
+        assertThrows(CarlException.class, () -> taskList.deleteTask(-1));
     }
 
 }

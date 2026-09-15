@@ -26,10 +26,16 @@ public abstract class ModifyTaskCommand implements Command {
     @Override
     public CommandResult onRun(Ui ui, TaskManager storage, TaskList tasks, String raw)
             throws CarlException {
-        CommandResult commandResult = execute(ui, storage, tasks, raw);
-        storage.saveAll(tasks);
+        TaskList.Snapshot snapshot = tasks.createSnapshot();
+        try {
+            CommandResult commandResult = execute(ui, storage, tasks, raw);
+            storage.saveAll(tasks);
 
-        return commandResult;
+            return commandResult;
+        } catch (CarlException | RuntimeException e) {
+            tasks.restore(snapshot);
+            throw e;
+        }
     }
 
     public abstract CommandResult execute(Ui ui, TaskManager storage,

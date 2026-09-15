@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 import carl.exceptions.CarlException;
 import carl.task.Event;
-import carl.task.Item;
 import carl.task.Task;
 import carl.task.TaskList;
 import carl.task.TaskManager;
@@ -50,7 +49,8 @@ public class EventCommand extends AddTaskCommand {
 
     }
 
-    private String addTask(String name, LocalDateTime from, LocalDateTime to, TaskList tasks, Ui ui) {
+    private String addTask(String name, LocalDateTime from, LocalDateTime to,
+                           TaskList tasks, Ui ui) throws CarlException {
         Task task = new Event(name, from, to);
         tasks.addTaskToList(task);
         return ui.showAddTask(task, tasks.getTasksLeft());

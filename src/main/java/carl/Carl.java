@@ -22,6 +22,7 @@ public class Carl {
     private TaskList tasks;
     private Ui ui;
     private CarlParser parser;
+    private String startupWarning;
 
     /**
      * Main method to launch the Carl application.
@@ -57,6 +58,8 @@ public class Carl {
 
         } catch (CarlException e) {
             return CommandResult.error(e.getMessage());
+        } catch (RuntimeException e) {
+            return CommandResult.error("An unexpected error occurred. The command could not be completed safely.");
         }
     }
 
@@ -68,11 +71,17 @@ public class Carl {
         ui = new Ui();
         taskManager = new TaskManager();
         tasks = new TaskList(taskManager.createSave());
+        startupWarning = taskManager.getStartupWarning();
 
         parser = new CarlParser();
     }
 
-
-
-
+    /**
+     * Returns a recoverable warning encountered while loading task storage.
+     *
+     * @return warning text, or {@code null} when startup completed normally
+     */
+    public String getStartupWarning() {
+        return startupWarning;
+    }
 }

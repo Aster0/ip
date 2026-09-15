@@ -2,6 +2,8 @@ package carl.parser;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import carl.commands.DeadlineCommand;
 import carl.exceptions.CarlCommandException;
@@ -13,7 +15,8 @@ import carl.util.DateParser;
  */
 public class DeadlineCommandParser implements Parser<DeadlineCommand> {
 
-    private static final String USAGE = "deadline <project_name> /by <date>";
+    private static final String USAGE = "deadline <description> /by yyyy-MM-dd HHmm";
+    private static final Pattern BY_MARKER = Pattern.compile("(?<!\\S)/by(?!\\S)");
 
     /**
      * Parses the given input string to extract the task name and deadline date.
@@ -24,26 +27,28 @@ public class DeadlineCommandParser implements Parser<DeadlineCommand> {
      */
     @Override
     public DeadlineCommand parse(String input) throws CarlException {
-
-        if (!input.contains("/by")) {
+        Matcher marker = BY_MARKER.matcher(input);
+        if (!marker.find()) {
             throw new CarlCommandException(USAGE);
         }
 
-        String[] splitBy = input.split("/by", 2);
-        String name = splitBy[0].trim();
-        String byStr = splitBy[1].trim();
+        int markerStart = marker.start();
+        int markerEnd = marker.end();
+        if (marker.find()) {
+            throw new CarlCommandException("Specify `/by` exactly once.");
+        }
 
-        if (name.isEmpty() || byStr.isEmpty()) {
+        String name = InputValidator.normalizeTaskName(input.substring(0, markerStart), USAGE);
+        String byStr = input.substring(markerEnd).strip();
+        if (byStr.isEmpty()) {
             throw new CarlCommandException(USAGE);
         }
 
         try {
             LocalDateTime by = DateParser.parseDateTime(byStr);
             return new DeadlineCommand(name, by);
-
         } catch (DateTimeParseException e) {
             throw new CarlCommandException(DateParser.getDateTimeErrorMessage());
         }
-
     }
 }

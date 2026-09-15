@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 import carl.exceptions.CarlException;
 import carl.task.Deadline;
-import carl.task.Item;
 import carl.task.Task;
 import carl.task.TaskList;
 import carl.task.TaskManager;

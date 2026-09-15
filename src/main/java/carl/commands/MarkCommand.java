@@ -33,9 +33,6 @@ public class MarkCommand extends TargetedTaskCommand {
      */
     @Override
     public CommandResult execute(Ui ui, TaskManager storage, TaskList tasks, String raw) throws CarlException {
-
-        System.out.println("MARKED!");
-        // mark x
         Task task = tasks.markTaskAsDone(index - 1);
 
         return CommandResult.success(ui.showMarkTaskAsDone(task));

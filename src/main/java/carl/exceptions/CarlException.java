@@ -14,4 +14,14 @@ public class CarlException extends Exception {
         super(message);
     }
 
+    /**
+     * Constructs a new {@code CarlException} with a message and underlying cause.
+     *
+     * @param message The detail message explaining the exception.
+     * @param cause The exception that caused this failure.
+     */
+    public CarlException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
 }

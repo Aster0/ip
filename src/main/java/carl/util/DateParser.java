@@ -3,18 +3,31 @@ package carl.util;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
+import java.util.Locale;
 
 
 /**
  * Utility class for parsing and formatting dates.
  */
 public class DateParser {
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = new DateTimeFormatterBuilder()
+            .appendPattern("uuuu-MM-dd HHmm")
+            .toFormatter(Locale.ENGLISH)
+            .withResolverStyle(ResolverStyle.STRICT);
+    private static final DateTimeFormatter DATE_FORMATTER = new DateTimeFormatterBuilder()
+            .appendPattern("uuuu-MM-dd")
+            .toFormatter(Locale.ENGLISH)
+            .withResolverStyle(ResolverStyle.STRICT);
+    private static final DateTimeFormatter DISPLAY_FORMATTER =
+            DateTimeFormatter.ofPattern("MMM dd uuuu, h:mm a", Locale.ENGLISH);
 
     private DateParser() {
 
     }
-    
+
     /**
      * Parses a string into a LocalDateTime object.
      *
@@ -23,9 +36,10 @@ public class DateParser {
      * @throws DateTimeParseException If the string cannot be parsed into a valid date and time.
      */
     public static LocalDateTime parseDateTime(String strDate) throws DateTimeParseException {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
-        return LocalDateTime.parse(strDate, formatter);
-
+        if (strDate == null || !strDate.matches("\\d{4}-\\d{2}-\\d{2} \\d{4}")) {
+            throw new DateTimeParseException("Invalid date and time format", String.valueOf(strDate), 0);
+        }
+        return LocalDateTime.parse(strDate, DATE_TIME_FORMATTER);
     }
 
     /**
@@ -36,9 +50,10 @@ public class DateParser {
      * @throws DateTimeParseException If the string cannot be parsed into a valid date.
      */
     public static LocalDate parseDate(String strDate) throws DateTimeParseException {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return LocalDate.parse(strDate, formatter);
-
+        if (strDate == null || !strDate.matches("\\d{4}-\\d{2}-\\d{2}")) {
+            throw new DateTimeParseException("Invalid date format", String.valueOf(strDate), 0);
+        }
+        return LocalDate.parse(strDate, DATE_FORMATTER);
     }
 
     /**
@@ -65,7 +80,7 @@ public class DateParser {
      * @return A DateTimeFormatter with the pattern "MMM dd yyyy, h:mm a".
      */
     public static DateTimeFormatter getDisplayFormatter() {
-        return DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
+        return DISPLAY_FORMATTER;
     }
 
     /**
@@ -74,6 +89,6 @@ public class DateParser {
      * @return A DateTimeFormatter with the pattern "yyyy-MM-dd HHmm".
      */
     public static DateTimeFormatter getStorageFormatter() {
-        return DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
+        return DATE_TIME_FORMATTER;
     }
 }

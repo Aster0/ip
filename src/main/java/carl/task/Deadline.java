@@ -48,8 +48,12 @@ public class Deadline extends Task {
     }
 
     @Override
+    protected String getIdentity() {
+        return super.getIdentity() + "|" + by;
+    }
+
+    @Override
     protected boolean isOnDate(LocalDate targetDate) {
         return targetDate.isEqual(this.by.toLocalDate());
     }
 }
-

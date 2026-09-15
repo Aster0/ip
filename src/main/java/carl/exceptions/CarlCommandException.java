@@ -12,6 +12,6 @@ public class CarlCommandException extends CarlException {
      * @param usage The correct usage format or the reason for the command failure.
      */
     public CarlCommandException(String usage) {
-        super(String.format("You used this command wrongly! Reason: %s", usage));
+        super(String.format("Command error: %s", usage));
     }
 }

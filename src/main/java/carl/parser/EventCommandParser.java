@@ -2,6 +2,8 @@ package carl.parser;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import carl.commands.EventCommand;
 import carl.exceptions.CarlCommandException;
@@ -12,7 +14,9 @@ import carl.util.DateParser;
  * Parses input arguments and creates a new EventCommand object.
  */
 public class EventCommandParser implements Parser<EventCommand> {
-    private static final String USAGE = "event <project_name> /from <date> /to <date>";
+    private static final String USAGE = "event <description> /from yyyy-MM-dd HHmm /to yyyy-MM-dd HHmm";
+    private static final Pattern FROM_MARKER = Pattern.compile("(?<!\\S)/from(?!\\S)");
+    private static final Pattern TO_MARKER = Pattern.compile("(?<!\\S)/to(?!\\S)");
 
     /**
      * Parses the given input string to extract the task name, start date, and end date.
@@ -23,13 +27,16 @@ public class EventCommandParser implements Parser<EventCommand> {
      */
     @Override
     public EventCommand parse(String input) throws CarlException {
+        Marker fromMarker = findSingleMarker(input, FROM_MARKER, "/from");
+        Marker toMarker = findSingleMarker(input, TO_MARKER, "/to");
+        if (fromMarker.start() >= toMarker.start()) {
+            throw new CarlCommandException(USAGE);
+        }
 
-        String[] parts = extractParts(input);
-        String name = parts[0];
-        String fromStr = parts[1];
-        String toStr = parts[2];
-
-        if (name.isEmpty() || fromStr.isEmpty() || toStr.isEmpty()) {
+        String name = InputValidator.normalizeTaskName(input.substring(0, fromMarker.start()), USAGE);
+        String fromStr = input.substring(fromMarker.end(), toMarker.start()).strip();
+        String toStr = input.substring(toMarker.end()).strip();
+        if (fromStr.isEmpty() || toStr.isEmpty()) {
             throw new CarlCommandException(USAGE);
         }
 
@@ -37,36 +44,31 @@ public class EventCommandParser implements Parser<EventCommand> {
             LocalDateTime from = DateParser.parseDateTime(fromStr);
             LocalDateTime to = DateParser.parseDateTime(toStr);
 
-            if (from.isAfter(to)) {
-                throw new CarlCommandException("The event start date cannot be after the end date.");
+            if (!from.isBefore(to)) {
+                throw new CarlCommandException("The event start must be earlier than the event end.");
             }
 
             return new EventCommand(name, from, to);
-
         } catch (DateTimeParseException e) {
             throw new CarlCommandException(DateParser.getDateTimeErrorMessage());
         }
     }
 
-    private String[] extractParts(String input) throws CarlException {
-        if (!input.contains("/from") || !input.contains("/to")) {
+    /** Finds one required marker and rejects repeated parameters. */
+    private Marker findSingleMarker(String input, Pattern pattern, String markerName) throws CarlException {
+        Matcher matcher = pattern.matcher(input);
+        if (!matcher.find()) {
             throw new CarlCommandException(USAGE);
         }
 
-        String[] splitFrom = input.split("/from", 2);
-        String[] splitTo = splitFrom[1].split("/to", 2);
-
-        if (splitTo.length < 2) {
-            throw new CarlCommandException(USAGE);
+        Marker marker = new Marker(matcher.start(), matcher.end());
+        if (matcher.find()) {
+            throw new CarlCommandException("Specify `" + markerName + "` exactly once.");
         }
-
-        return new String[] {
-                splitFrom[0].trim(),
-                splitTo[0].trim(),
-                splitTo[1].trim()
-        };
-
+        return marker;
     }
 
-
+    /** Character range occupied by a command parameter marker. */
+    private record Marker(int start, int end) {
+    }
 }
