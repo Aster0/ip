@@ -17,7 +17,7 @@ import javafx.application.Application;
 public class Carl {
 
 
-    public static final String BOT_NAME = "CARL";
+    public static final String BOT_NAME = "Carl · Night-Shift Dispatcher";
     private TaskManager taskManager;
     private TaskList tasks;
     private Ui ui;

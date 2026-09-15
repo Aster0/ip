@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.TextFlow?>
 
 <fx:root alignment="TOP_RIGHT"
          maxHeight="1.7976931348623157E308"
@@ -16,11 +17,9 @@
         <VBox spacing="3.0" styleClass="dialog-bubble">
             <children>
                 <Label fx:id="speaker" styleClass="dialog-speaker" />
-                <Label fx:id="dialog"
-                       minHeight="-Infinity"
-                       styleClass="dialog-text"
-                       text="Message"
-                       wrapText="true" />
+                <TextFlow fx:id="dialog"
+                          lineSpacing="2.0"
+                          styleClass="dialog-text" />
             </children>
         </VBox>
     </children>

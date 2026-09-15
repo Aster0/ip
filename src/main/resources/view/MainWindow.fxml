@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
             minHeight="420.0" minWidth="320.0"
             prefHeight="600.0" prefWidth="420.0"
@@ -28,12 +29,8 @@
                 <Insets left="16.0" right="16.0" />
             </padding>
             <children>
-                <VBox alignment="CENTER_LEFT" spacing="2.0">
-                    <children>
-                        <Label styleClass="header-title" text="Carl" />
-                        <Label styleClass="header-status" text="Task assistant · ready" />
-                    </children>
-                </VBox>
+                <Circle radius="4.0" styleClass="status-indicator" />
+                <Label styleClass="header-title" text="Carl · Night-Shift Dispatcher" />
             </children>
         </HBox>
 

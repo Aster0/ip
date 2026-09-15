@@ -18,6 +18,7 @@ public class CarlParser {
      */
     public CarlParser() {
         commands.put("bye", (args) -> new ByeCommand());
+        commands.put("help", (args) -> new HelpCommand());
         commands.put("list", (args) -> new ListCommand());
         commands.put("mark", new TaskIndexParser<Command>(MarkCommand::new));
         commands.put("unmark", new TaskIndexParser<Command>(UnmarkCommand::new));

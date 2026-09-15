@@ -3,7 +3,6 @@ package carl.ui;
 
 import java.util.List;
 
-import carl.Carl;
 import carl.task.Task;
 
 
@@ -13,9 +12,6 @@ import carl.task.Task;
  * Handles displaying messages to the user.
  */
 public class Ui {
-    public static final String SEPARATOR = "_____________________________________";
-
-
     private String buildMessage(String... inputs) {
         StringBuilder sb = new StringBuilder();
 
@@ -27,25 +23,17 @@ public class Ui {
     }
 
     /**
-     * Displays the welcome message and banner to the user.
+     * Displays the welcome message to the user.
      */
     public String showWelcome() {
-        return buildMessage("  ____    _    ____  _     \n" // Used Gemini to create this Ascii Banner
-                + " / ___|  / \\  |  _ \\| |    \n"
-                + "| |     / _ \\ | |_) | |    \n"
-                + "| |___ / ___ \\|  _ <| |___ \n"
-                + " \\____/_/   \\_\\_| \\_\\____|",
-                SEPARATOR,
-                "\"Hello there!  I am " + Carl.BOT_NAME + "!\"",
-                "What do you need help in?");
-
+        return "Carl online. What are we getting done?";
     }
 
     /**
      * Displays the goodbye message.
      */
     public String showGoodbye() {
-        return "Bye bye! Hope to see you again soon!";
+        return "Shift complete. See you next time.";
     }
 
     /**
@@ -55,13 +43,12 @@ public class Ui {
      * @param count The total number of tasks in the list.
      */
     public String showAddTask(Task task, int count) {
-
-        return buildMessage(SEPARATOR, "Okay! I have added this task:",
-                "  " + task, tasksLeft(count), SEPARATOR);
+        return buildMessage("Logged. I’ll keep that on the radar.",
+                "  " + task, tasksLeft(count));
     }
 
     private String tasksLeft(int count) {
-        return "\nNow you have " + count + " tasks in the list.";
+        return "Now you have " + count + " tasks in the list.";
     }
 
     /**
@@ -70,7 +57,7 @@ public class Ui {
      * @param task The task that was marked as done.
      */
     public String showMarkTaskAsDone(Task task) {
-        return "Done! Task is marked as done!\n  " + task;
+        return "Checked off. One less thing to worry about.\n  " + task;
     }
 
     /**
@@ -101,7 +88,7 @@ public class Ui {
     public String showTaskList(List<Task> tasks) {
 
         if (tasks.isEmpty()) {
-            return "No tasks found.";
+            return "Radar clear — no tasks here.";
         }
 
         String[] taskStrings = new String[tasks.size()];

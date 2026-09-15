@@ -1,6 +1,6 @@
 .app-root {
     -fx-background-color: #0e1621;
-    -fx-font-family: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    -fx-font-family: "System";
 }
 
 .app-header,
@@ -11,17 +11,19 @@
 
 .app-header {
     -fx-border-width: 0 0 1 0;
+    -fx-spacing: 8px;
+}
+
+.status-indicator {
+    -fx-fill: #58c785;
+    -fx-stroke: rgba(88, 199, 133, 0.25);
+    -fx-stroke-width: 3px;
 }
 
 .header-title {
     -fx-font-size: 15px;
     -fx-font-weight: bold;
     -fx-text-fill: #f4f7fa;
-}
-
-.header-status {
-    -fx-font-size: 11px;
-    -fx-text-fill: #7fca9c;
 }
 
 .chat-scroll,
@@ -63,10 +65,20 @@
     -fx-background-radius: 13px;
 }
 
-.dialog-text {
+.dialog-text-run {
+    -fx-fill: #f4f7fa;
+    -fx-font-family: "System";
     -fx-font-size: 13px;
-    -fx-line-spacing: 2px;
-    -fx-text-fill: #f4f7fa;
+}
+
+.command-text {
+    -fx-font-family: "Monospaced";
+    -fx-font-weight: bold;
+}
+
+.date-accent {
+    -fx-fill: #e6ad55;
+    -fx-font-weight: bold;
 }
 
 .dialog-speaker {

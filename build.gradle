@@ -57,7 +57,7 @@ test {
 }
 
 application {
-    mainClass.set("Carl")
+    mainClass.set("carl.Carl")
 }
 
 jar {

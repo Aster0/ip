@@ -21,7 +21,7 @@ public class MainApplication extends Application {
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
-            stage.setTitle("Carl · Task Assistant");
+            stage.setTitle(Carl.BOT_NAME);
             stage.setMinWidth(340);
             stage.setMinHeight(440);
             stage.setResizable(true);

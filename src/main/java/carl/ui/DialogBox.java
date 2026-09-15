@@ -1,6 +1,9 @@
 package carl.ui;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -8,13 +11,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 /**
  * Represents a responsive chat bubble for the user, Carl, or an error message.
  */
 public class DialogBox extends HBox {
+    private static final Pattern INLINE_COMMAND_PATTERN = Pattern.compile("`([^`]+)`");
+    private static final Pattern DATE_DETAIL_PATTERN = Pattern.compile(
+            "(?i)\\[D]|\\b(?:by|from|to):\\s*[^\\n)]+");
+
     @FXML
-    private Label dialog;
+    private TextFlow dialog;
     @FXML
     private Label speaker;
 
@@ -28,7 +37,7 @@ public class DialogBox extends HBox {
             e.printStackTrace();
         }
 
-        dialog.setText(text);
+        setDialogText(text, type);
         getStyleClass().add(type.styleClass);
         setAlignment(type.alignment);
         setMaxWidth(Double.MAX_VALUE);
@@ -40,6 +49,61 @@ public class DialogBox extends HBox {
         // Keep messages readable on wide windows without overflowing narrow ones.
         dialog.maxWidthProperty().bind(Bindings.min(560,
                 Bindings.max(180, widthProperty().multiply(type.widthRatio).subtract(36))));
+    }
+
+    /**
+     * Splits a message into styled text runs so commands and scheduling details can be accented
+     * without reducing the readability of the rest of the message.
+     *
+     * @param message message to display
+     * @param type category of dialog being rendered
+     */
+    private void setDialogText(String message, DialogType type) {
+        TextStyle[] styles = new TextStyle[message.length()];
+        Arrays.fill(styles, TextStyle.NORMAL);
+
+        if (type == DialogType.USER) {
+            markFirstCommand(message, styles);
+        }
+        markMatches(message, styles, INLINE_COMMAND_PATTERN, 1, TextStyle.COMMAND);
+        markMatches(message, styles, DATE_DETAIL_PATTERN, 0, TextStyle.DATE);
+
+        int runStart = 0;
+        while (runStart < message.length()) {
+            TextStyle style = styles[runStart];
+            int runEnd = runStart + 1;
+            while (runEnd < message.length() && styles[runEnd] == style) {
+                runEnd++;
+            }
+
+            Text textRun = new Text(message.substring(runStart, runEnd));
+            textRun.getStyleClass().addAll("dialog-text-run", style.styleClass);
+            dialog.getChildren().add(textRun);
+            runStart = runEnd;
+        }
+    }
+
+    /** Marks the command word at the beginning of a user message. */
+    private void markFirstCommand(String message, TextStyle[] styles) {
+        int commandStart = 0;
+        while (commandStart < message.length() && Character.isWhitespace(message.charAt(commandStart))) {
+            commandStart++;
+        }
+
+        int commandEnd = commandStart;
+        while (commandEnd < message.length() && !Character.isWhitespace(message.charAt(commandEnd))) {
+            commandEnd++;
+        }
+        Arrays.fill(styles, commandStart, commandEnd, TextStyle.COMMAND);
+    }
+
+    /** Marks every captured region from a pattern with the requested text style. */
+    private void markMatches(String message, TextStyle[] styles, Pattern pattern,
+                             int group, TextStyle style) {
+        Matcher matcher = pattern.matcher(message);
+        while (matcher.find()) {
+            Arrays.fill(styles, matcher.start(group), matcher.end(group), style);
+        }
     }
 
     /**
@@ -93,6 +157,19 @@ public class DialogBox extends HBox {
             this.alignment = alignment;
             this.showsHeading = showsHeading;
             this.widthRatio = widthRatio;
+        }
+    }
+
+    /** Visual styles that may be applied to individual portions of a message. */
+    private enum TextStyle {
+        NORMAL("normal-text"),
+        COMMAND("command-text"),
+        DATE("date-accent");
+
+        private final String styleClass;
+
+        TextStyle(String styleClass) {
+            this.styleClass = styleClass;
         }
     }
 }
