@@ -29,7 +29,7 @@ gradlew.bat shadowJar
 Then start it from the same folder:
 
 ```console
-java -jar build/libs/duke.jar
+java -jar build/libs/carl.jar
 ```
 
 You can also run the `carl.Carl` main class from IntelliJ IDEA.
