@@ -15,6 +15,7 @@ import carl.exceptions.CarlUnknownTaskException;
 public class TaskList implements Comparator<Task> {
 
     private List<Task> tasks;
+
     /**
      * Constructs a TaskList with the given list of tasks.
      *
@@ -23,7 +24,6 @@ public class TaskList implements Comparator<Task> {
     public TaskList(List<Task> tasks) {
         this.tasks = new ArrayList<>(tasks);
     }
-
 
     @Override
     public int compare(Task t1, Task t2) {
@@ -57,7 +57,6 @@ public class TaskList implements Comparator<Task> {
         for (Task task : tasks) {
             sb.append(task.toSaveFormat())
                     .append(System.lineSeparator());
-            // System.lineSeparator = \n but work for all OS
         }
 
         return sb.toString();
@@ -85,6 +84,7 @@ public class TaskList implements Comparator<Task> {
             tasks.get(i).status = snapshot.statuses.get(i);
         }
     }
+
     /**
      * Gets the number of tasks currently in the list.
      *
@@ -100,7 +100,6 @@ public class TaskList implements Comparator<Task> {
      * @return A list containing all tasks.
      */
     public List<Task> getAllTasks() {
-
         return new ArrayList<>(this.tasks);
     }
 
@@ -111,7 +110,6 @@ public class TaskList implements Comparator<Task> {
      * @return A list of tasks due on the given date.
      */
     public List<Task> getTasksDueOn(LocalDate date) {
-
         List<Task> tasks = new ArrayList<>();
 
         for (Task task : this.tasks) {
@@ -123,11 +121,14 @@ public class TaskList implements Comparator<Task> {
         return tasks;
     }
 
+    /**
+     * Returns tasks ordered alphabetically by description without changing saved order.
+     *
+     * @return a sorted copy of the task list
+     */
     public List<Task> getSortedTasks() {
-
         List<Task> tasks = new ArrayList<>(this.tasks);
         tasks.sort(this);
-
         return tasks;
     }
 
@@ -138,7 +139,6 @@ public class TaskList implements Comparator<Task> {
      * @return A list of tasks that match the keyword.
      */
     public List<Task> findTask(String keyword) {
-
         return tasks.stream().filter(task -> task.hasNameMatch(keyword)).toList();
     }
 
@@ -150,20 +150,15 @@ public class TaskList implements Comparator<Task> {
      * @throws CarlCommandException If the index is invalid or the task is already done.
      */
     public Task markTaskAsDone(int index) throws CarlCommandException {
-
         if (index < 0 || index >= tasks.size()) {
             throw new CarlCommandException("That task number does not exist. Use `list` to check task numbers.");
         }
 
         Task task = tasks.get(index);
-
         if (!task.markAsDone()) {
             throw new CarlCommandException("That task is already completed.");
         }
-
-
         return task;
-
     }
 
     /**

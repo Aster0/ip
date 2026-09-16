@@ -12,9 +12,9 @@ import carl.ui.Ui;
 public class MarkCommand extends TargetedTaskCommand {
 
     /**
-     * Constructs an {@code AddTaskCommand} with the specified task name.
+     * Constructs a command that completes the task at the specified one-based index.
      *
-     * @param index index of the Task
+     * @param index one-based task index
      */
     public MarkCommand(int index) {
         super(index);
@@ -28,14 +28,12 @@ public class MarkCommand extends TargetedTaskCommand {
      * @param storage Task manager handling task data persistence.
      * @param tasks   List of current tasks.
      * @param raw     Raw input string entered by the user.
-     * @return
+     * @return result describing the completed task
      * @throws CarlException If the task index is missing, invalid, or the task is already marked as done.
      */
     @Override
     public CommandResult execute(Ui ui, TaskManager storage, TaskList tasks, String raw) throws CarlException {
         Task task = tasks.markTaskAsDone(index - 1);
-
         return CommandResult.success(ui.showMarkTaskAsDone(task));
-
     }
 }

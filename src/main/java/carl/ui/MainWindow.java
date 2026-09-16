@@ -42,6 +42,7 @@ public class MainWindow extends AnchorPane {
         }
         userInput.requestFocus();
     }
+
     /**
      * Initializes the controller after its root element has been completely processed.
      * Binds the scroll pane's vertical position to the height of the dialog container.
@@ -58,29 +59,38 @@ public class MainWindow extends AnchorPane {
 
     @FXML
     private void handleUserInput() {
-
         String userText = userInput.getText();
-
         if (userText.trim().isEmpty()) {
             return;
         }
 
         CommandResult commandResult = bot.getResponse(userText);
-
-        DialogBox response = commandResult.isError()
-                ? DialogBox.getErrorDialog(commandResult.message())
-                : DialogBox.getBotDialog(commandResult.message());
-
-        dialogContainer.getChildren().addAll(DialogBox.getUserDialog(userText), response);
-
-        userInput.clear();
-        userInput.requestFocus();
+        displayConversationTurn(userText, commandResult);
+        resetInputField();
 
         if (commandResult.isExited()) {
-            PauseTransition delay = new PauseTransition(Duration.seconds(1.2));
-            delay.setOnFinished(event -> Platform.exit());
-            delay.play();
+            scheduleExit();
         }
     }
 
+    /** Displays one user command followed by Carl's success or error response. */
+    private void displayConversationTurn(String userText, CommandResult commandResult) {
+        DialogBox response = commandResult.isError()
+                ? DialogBox.getErrorDialog(commandResult.message())
+                : DialogBox.getBotDialog(commandResult.message());
+        dialogContainer.getChildren().addAll(DialogBox.getUserDialog(userText), response);
+    }
+
+    /** Clears the completed command and returns keyboard focus to the input field. */
+    private void resetInputField() {
+        userInput.clear();
+        userInput.requestFocus();
+    }
+
+    /** Gives the goodbye message time to render before closing the application. */
+    private void scheduleExit() {
+        PauseTransition delay = new PauseTransition(Duration.seconds(1.2));
+        delay.setOnFinished(event -> Platform.exit());
+        delay.play();
+    }
 }

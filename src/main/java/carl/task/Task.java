@@ -9,8 +9,13 @@ import java.util.Objects;
  * Represents a generic task in the application.
  */
 public class Task {
+    /** Current completion state. */
     protected TaskStatus status;
-    protected TaskType type;
+
+    /** Task category. */
+    protected final TaskType type;
+
+    /** User-provided task description. */
     protected final String name;
 
     /**
@@ -79,7 +84,6 @@ public class Task {
      */
     public String toSaveFormat() {
         return String.format("%s | %d | %s", type, status.toInt(), name);
-
     }
 
     /**
@@ -116,7 +120,11 @@ public class Task {
         return other != null && getIdentity().equals(other.getIdentity());
     }
 
-    /** Returns a normalized identity used to detect duplicate task details. */
+    /**
+     * Returns a normalized identity used to detect duplicate task details.
+     *
+     * @return normalized task identity
+     */
     protected String getIdentity() {
         return type + "|" + name.toLowerCase(Locale.ROOT);
     }
@@ -141,7 +149,6 @@ public class Task {
     protected boolean isOnDate(LocalDate targetDate) {
         return false;
     }
-
 
     /**
      * A Data Transfer Object used for parsing and instantiating specific Task types.

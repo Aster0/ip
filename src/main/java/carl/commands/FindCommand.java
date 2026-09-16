@@ -29,7 +29,7 @@ public class FindCommand implements Command {
      * @param storage Task manager handling task data persistence.
      * @param tasks   List of current tasks.
      * @param raw     Raw input string entered by the user.
-     * @return
+     * @return result containing tasks whose descriptions match the keyword
      * @throws CarlException If an error occurs during execution.
      */
     @Override

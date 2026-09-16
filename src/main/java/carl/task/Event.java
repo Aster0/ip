@@ -10,8 +10,11 @@ import carl.util.DateParser;
  */
 public class Event extends Task {
 
-    protected LocalDateTime from;
-    protected LocalDateTime to;
+    /** Date and time when the event starts. */
+    protected final LocalDateTime from;
+
+    /** Date and time when the event ends. */
+    protected final LocalDateTime to;
 
     /**
      * Constructs a new Event task with the specified item, start time, and end time.

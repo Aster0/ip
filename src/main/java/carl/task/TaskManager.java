@@ -50,47 +50,77 @@ public class TaskManager {
         startupWarning = null;
 
         try {
-            List<String> lines = Files.readAllLines(saveFilePath, StandardCharsets.UTF_8);
-            for (int i = 0; i < lines.size(); i++) {
-                String line = lines.get(i);
-                if (line.isBlank()) {
-                    continue;
-                }
-
-                try {
-                    Task task = parseStringToTask(line);
-                    boolean isDuplicate = tasks.stream()
-                            .anyMatch(existingTask -> existingTask.hasSameDetails(task));
-                    if (isDuplicate) {
-                        invalidLineNumbers.add(i + 1);
-                    } else {
-                        tasks.add(task);
-                    }
-                } catch (IllegalArgumentException | DateTimeParseException e) {
-                    invalidLineNumbers.add(i + 1);
-                }
-            }
+            loadSavedLines(tasks, invalidLineNumbers);
         } catch (IOException | SecurityException e) {
-            startupWarning = "Carl could not read `" + saveFilePath
-                    + "`. Check that the file exists and is readable. Starting with an empty task list.";
+            setUnreadableFileWarning();
             return tasks;
         }
 
+        setInvalidLinesWarning(invalidLineNumbers);
+        return tasks;
+    }
+
+    /** Loads each non-blank save-file line and records lines that cannot be restored safely. */
+    private void loadSavedLines(List<Task> tasks, List<Integer> invalidLineNumbers) throws IOException {
+        List<String> lines = Files.readAllLines(saveFilePath, StandardCharsets.UTF_8);
+        for (int i = 0; i < lines.size(); i++) {
+            String line = lines.get(i);
+            if (!line.isBlank() && !tryAddSavedTask(line, tasks)) {
+                invalidLineNumbers.add(i + 1);
+            }
+        }
+    }
+
+    /** Parses and adds one saved task, returning false for malformed or duplicate data. */
+    private boolean tryAddSavedTask(String line, List<Task> tasks) {
+        try {
+            Task task = parseStringToTask(line);
+            if (tasks.stream().anyMatch(existingTask -> existingTask.hasSameDetails(task))) {
+                return false;
+            }
+            tasks.add(task);
+            return true;
+        } catch (IllegalArgumentException | DateTimeParseException e) {
+            return false;
+        }
+    }
+
+    /** Records a warning when the save file cannot be read. */
+    private void setUnreadableFileWarning() {
+        startupWarning = "Carl could not read `" + saveFilePath
+                + "`. Check that the file exists and is readable. Starting with an empty task list.";
+    }
+
+    /** Records skipped line numbers while leaving valid loaded tasks available. */
+    private void setInvalidLinesWarning(List<Integer> invalidLineNumbers) {
         if (!invalidLineNumbers.isEmpty()) {
             startupWarning = "Skipped invalid or duplicate saved task data on line(s): "
                     + invalidLineNumbers + ". Valid tasks were loaded normally.";
         }
-        return tasks;
     }
 
     /** Converts one validated save-file line into a task. */
     private Task parseStringToTask(String line) {
+        String[] fields = splitSavedFields(line);
+        TaskType type = TaskType.of(fields[0].strip());
+        validateFieldCount(type, fields);
+
+        TaskStatus status = parseTaskStatus(fields[1]);
+        String name = parseTaskName(fields[2]);
+        return createTask(type, status, name, fields);
+    }
+
+    /** Splits a save-file line and rejects lines missing the common task fields. */
+    private String[] splitSavedFields(String line) {
         String[] fields = line.split("\\s*\\|\\s*", -1);
         if (fields.length < 3) {
             throw new IllegalArgumentException("Missing saved task fields");
         }
+        return fields;
+    }
 
-        TaskType type = TaskType.of(fields[0].strip());
+    /** Ensures the saved field count matches the encoded task type. */
+    private void validateFieldCount(TaskType type, String[] fields) {
         int expectedFieldCount = switch (type) {
             case TODO -> 3;
             case DEADLINE -> 4;
@@ -99,29 +129,53 @@ public class TaskManager {
         if (fields.length != expectedFieldCount) {
             throw new IllegalArgumentException("Unexpected saved task fields");
         }
+    }
 
-        TaskStatus status = switch (fields[1].strip()) {
+    /** Converts a saved completion flag into its task status. */
+    private TaskStatus parseTaskStatus(String field) {
+        return switch (field.strip()) {
             case "0" -> TaskStatus.NOT_DONE;
             case "1" -> TaskStatus.DONE;
             default -> throw new IllegalArgumentException("Invalid task status");
         };
-        String name = fields[2].strip();
+    }
+
+    /** Validates and returns a saved task description. */
+    private String parseTaskName(String field) {
+        String name = field.strip();
         if (name.isEmpty() || name.length() > MAX_SAVED_TASK_NAME_LENGTH) {
             throw new IllegalArgumentException("Invalid task description");
         }
+        return name;
+    }
 
-        LocalDateTime from = null;
-        LocalDateTime to = null;
-        if (type == TaskType.DEADLINE || type == TaskType.EVENT) {
-            from = DateParser.parseDateTime(fields[3].strip());
-        }
-        if (type == TaskType.EVENT) {
-            to = DateParser.parseDateTime(fields[4].strip());
-            if (!from.isBefore(to)) {
-                throw new IllegalArgumentException("Invalid event time range");
-            }
-        }
+    /** Creates the task subtype represented by validated save-file fields. */
+    private Task createTask(TaskType type, TaskStatus status, String name, String[] fields) {
+        return switch (type) {
+            case TODO -> buildTask(type, status, name, null, null);
+            case DEADLINE -> buildTask(type, status, name, parseDateTime(fields[3]), null);
+            case EVENT -> createEventTask(type, status, name, fields);
+        };
+    }
 
+    /** Creates an event after validating that its saved time range is chronological. */
+    private Task createEventTask(TaskType type, TaskStatus status, String name, String[] fields) {
+        LocalDateTime from = parseDateTime(fields[3]);
+        LocalDateTime to = parseDateTime(fields[4]);
+        if (!from.isBefore(to)) {
+            throw new IllegalArgumentException("Invalid event time range");
+        }
+        return buildTask(type, status, name, from, to);
+    }
+
+    /** Parses a saved date-time field using Carl's strict storage format. */
+    private LocalDateTime parseDateTime(String field) {
+        return DateParser.parseDateTime(field.strip());
+    }
+
+    /** Passes validated values to the task factory. */
+    private Task buildTask(TaskType type, TaskStatus status, String name,
+                           LocalDateTime from, LocalDateTime to) {
         return Task.of(new Task.TaskData(type, status, name, from, to));
     }
 
@@ -148,13 +202,19 @@ public class TaskManager {
             throw new CarlStorageException(
                     "Carl could not save your changes. Check access to `" + saveFilePath + "` and try again.", e);
         } finally {
-            if (temporaryFile != null) {
-                try {
-                    Files.deleteIfExists(temporaryFile);
-                } catch (IOException | SecurityException ignored) {
-                    // The original save error is more useful than a temporary-file cleanup failure.
-                }
-            }
+            deleteTemporaryFile(temporaryFile);
+        }
+    }
+
+    /** Removes an incomplete temporary save without masking the original storage result. */
+    private void deleteTemporaryFile(Path temporaryFile) {
+        if (temporaryFile == null) {
+            return;
+        }
+        try {
+            Files.deleteIfExists(temporaryFile);
+        } catch (IOException | SecurityException ignored) {
+            // The original save error is more useful than a temporary-file cleanup failure.
         }
     }
 

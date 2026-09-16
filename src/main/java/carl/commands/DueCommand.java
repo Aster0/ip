@@ -29,7 +29,7 @@ public class DueCommand implements Command {
      * @param storage Task manager handling task data persistence.
      * @param tasks   List of current tasks.
      * @param raw     Raw input string entered by the user.
-     * @return
+     * @return result containing tasks occurring on the requested date
      * @throws CarlException If the provided date format is invalid.
      */
     @Override

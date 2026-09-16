@@ -12,9 +12,9 @@ import carl.ui.Ui;
 public class DeleteCommand extends TargetedTaskCommand {
 
     /**
-     * Constructs an {@code AddTaskCommand} with the specified task name.
+     * Constructs a command that deletes the task at the specified one-based index.
      *
-     * @param index index of the Task
+     * @param index one-based task index
      */
     public DeleteCommand(int index) {
         super(index);
@@ -28,18 +28,12 @@ public class DeleteCommand extends TargetedTaskCommand {
      * @param storage Task manager handling task data persistence.
      * @param tasks   List of current tasks.
      * @param raw     Raw input string entered by the user.
-     * @return
+     * @return result describing the deleted task and remaining task count
      * @throws CarlException If the index argument is missing, invalid, or out of range.
      */
     @Override
     public CommandResult execute(Ui ui, TaskManager storage, TaskList tasks, String raw) throws CarlException {
-
-        // delete x
         Task task = tasks.deleteTask(index - 1);
-
-
         return CommandResult.success(ui.showDeleteTask(task, tasks.getTasksLeft()));
-
-
     }
 }

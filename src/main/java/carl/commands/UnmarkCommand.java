@@ -12,9 +12,9 @@ import carl.ui.Ui;
 public class UnmarkCommand extends TargetedTaskCommand {
 
     /**
-     * Constructs an {@code AddTaskCommand} with the specified task name.
+     * Constructs a command that reopens the task at the specified one-based index.
      *
-     * @param index index of the Task
+     * @param index one-based task index
      */
     public UnmarkCommand(int index) {
         super(index);
@@ -28,7 +28,7 @@ public class UnmarkCommand extends TargetedTaskCommand {
      * @param storage Task manager handling task data persistence.
      * @param tasks   List of current tasks.
      * @param raw     Raw input string entered by the user.
-     * @return
+     * @return result describing the reopened task
      * @throws CarlException If the task index is missing, invalid, or the task is already not done.
      */
     @Override

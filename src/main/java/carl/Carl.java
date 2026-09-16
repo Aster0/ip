@@ -1,6 +1,5 @@
 package carl;
 
-
 import java.util.Objects;
 
 import carl.commands.Command;
@@ -17,8 +16,7 @@ import javafx.application.Application;
  * Represents the main entry point and controller of the Carl chatbot application.
  */
 public class Carl {
-
-
+    /** Name displayed in the window title and application header. */
     public static final String BOT_NAME = "Carl · Night-Shift Dispatcher";
     private TaskManager taskManager;
     private TaskList tasks;
@@ -47,6 +45,8 @@ public class Carl {
 
     /**
      * Generates the welcome message for the user interface.
+     *
+     * @return Carl's welcome message
      */
     public String getWelcomeMessage() {
         return ui.showWelcome();
@@ -79,11 +79,9 @@ public class Carl {
      * Initializes the core dependencies and services required for the chatbot to run.
      */
     public void start() {
-
         ui = new Ui();
         tasks = new TaskList(taskManager.createSave());
         startupWarning = taskManager.getStartupWarning();
-
         parser = new CarlParser();
     }
 

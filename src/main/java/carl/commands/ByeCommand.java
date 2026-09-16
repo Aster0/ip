@@ -17,7 +17,7 @@ public class ByeCommand implements Command {
      * @param storage Task manager handling task data persistence.
      * @param tasks   List of current tasks.
      * @param raw     Raw input string entered by the user.
-     * @return
+     * @return an exit result containing Carl's goodbye message
      */
     @Override
     public CommandResult onRun(Ui ui, TaskManager storage, TaskList tasks, String raw) {
@@ -31,6 +31,6 @@ public class ByeCommand implements Command {
      */
     @Override
     public boolean isExited() {
-        return true; // if carl.commands.ByeCommand is used
+        return true;
     }
 }

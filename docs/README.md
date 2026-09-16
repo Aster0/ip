@@ -4,38 +4,25 @@
 
 Carl tracks todos, deadlines, and events in one local task list. Your commands appear in green on the right; Carl's replies appear in dark blue on the left, with errors highlighted in red.
 
+![Carl's Telegram-style interface](Ui.png)
+
 [Get started](#get-started) · [Commands](#commands) · [Dates and task numbers](#dates-and-task-numbers) · [Saving](#saving-your-tasks) · [Help](#common-questions)
 
 ## Get started
 
 ### 1. Start Carl
 
-Carl requires **Java 25 with JavaFX**.
+Carl requires **Java 25**. JavaFX is already included in `carl.jar`.
 
-If you have the project source, open a terminal in the project folder and build the app:
+1. Download `carl.jar` from the [latest GitHub release](https://github.com/Aster0/ip/releases/latest).
+2. Put it in an empty folder where Carl can create `save.txt`.
+3. Open a terminal in that folder and run:
 
-**macOS or Linux**
+   ```console
+   java -jar carl.jar
+   ```
 
-```console
-./gradlew shadowJar
-```
-
-**Windows**
-
-```console
-gradlew.bat shadowJar
-```
-
-Then start it from the same folder:
-
-```console
-java -jar build/libs/carl.jar
-```
-
-You can also run the `carl.Carl` main class from IntelliJ IDEA.
-
-> [!NOTE]
-> Build the JAR on the operating system where you will use it. JavaFX includes platform-specific components.
+> **Note:** Keep `carl.jar` and its generated `save.txt` together if you move Carl to another folder or computer.
 
 ### 2. Send a command
 
@@ -119,8 +106,7 @@ Time uses the 24-hour clock: `0905` is 9:05 AM and `1830` is 6:30 PM. Carl rejec
 
 Run `list` before `mark`, `unmark`, or `delete`, then use the number shown in that main list.
 
-> [!IMPORTANT]
-> `find`, `due`, and `sort` create temporary views. Their displayed numbers might not match the main list, so do not use them to choose a task to change.
+> **Important:** `find`, `due`, and `sort` create temporary views. Their displayed numbers might not match the main list, so do not use them to choose a task to change.
 
 Deleting a task cannot be undone. The remaining tasks receive new numbers the next time you run `list`.
 
@@ -175,15 +161,19 @@ Task-changing commands always use the main list's numbering. Run `list`, then us
 
 ### Why does the window not open?
 
-Check that Java 25 with JavaFX is selected. On macOS, use the Java 25 ZuluFX distribution configured for this project. Also make sure the JAR was built for your operating system.
+Run `java -version` and confirm that Java 25 is selected. Then start Carl from a terminal using `java -jar carl.jar` so that any launch error is visible.
 
 ### Does Carl work on macOS and Windows?
 
-Yes. Build the application on each target operating system, then use `./gradlew` on macOS or Linux and `gradlew.bat` on Windows as shown above.
+Yes. The released fat JAR includes JavaFX components for macOS, Windows, and Linux. Each computer still needs Java 25.
 
 ### Can I recover a deleted task?
 
 No. Carl has no undo command, so run `list` and check the task number before deleting.
+
+### How do I build Carl from source?
+
+Open a terminal in the project folder and use Java 25. Run `./gradlew shadowJar` on macOS or Linux, or `gradlew.bat shadowJar` on Windows. The result is `build/libs/carl.jar`.
 
 ---
 

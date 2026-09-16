@@ -10,7 +10,8 @@ import carl.util.DateParser;
  */
 public class Deadline extends Task {
 
-    protected LocalDateTime by;
+    /** Date and time by which the task is due. */
+    protected final LocalDateTime by;
 
     /**
      * Constructs a new Deadline task with the specified item and deadline.
