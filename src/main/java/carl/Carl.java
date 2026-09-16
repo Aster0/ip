@@ -35,7 +35,7 @@ public class Carl {
     }
 
     /**
-     * Main method to launch the Carl application.
+     * Launches the Carl application.
      *
      * @param args Command line arguments.
      */

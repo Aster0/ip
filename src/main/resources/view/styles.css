@@ -65,6 +65,24 @@
     -fx-background-radius: 13px;
 }
 
+.avatar {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 3, 0.2, 0, 1);
+}
+
+.avatar-background {
+    -fx-fill: #5288c1;
+}
+
+.user-avatar .avatar-background {
+    -fx-fill: #277c59;
+}
+
+.avatar-initial {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+}
+
 .dialog-text-run {
     -fx-fill: #f4f7fa;
     -fx-font-family: "System";
