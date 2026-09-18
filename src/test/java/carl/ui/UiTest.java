@@ -41,7 +41,7 @@ public class UiTest {
         assertEquals("Checked off. One less thing to worry about.\n  [T][X] buy milk",
                 ui.showMarkTaskAsDone(completed));
         assertEquals("Successfully unmarked this task as not done! \n  [T][X] buy milk",
-                ui.showUnMarkTask(completed));
+                ui.showUnmarkTask(completed));
         assertEquals("Successfully removed this task! \n  [T][X] buy milk\n"
                 + "Now you have 0 tasks in the list.", ui.showDeleteTask(completed, 0));
     }

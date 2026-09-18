@@ -49,7 +49,7 @@ public enum TaskType {
      * @return The corresponding TaskType (TODO, DEADLINE, or EVENT).
      * @throws IllegalArgumentException If the prefix does not match any valid task type.
      */
-    public static TaskType of(String prefix) {
+    public static TaskType parsePrefix(String prefix) {
         return switch (prefix) {
             case "T" -> TODO;
             case "D" -> DEADLINE;

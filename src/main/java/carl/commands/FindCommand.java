@@ -10,7 +10,7 @@ import carl.ui.Ui;
  */
 public class FindCommand implements Command {
 
-    private String keyword;
+    private final String keyword;
 
     /**
      * Constructs a {@code FindCommand} with the specified search keyword.
@@ -34,6 +34,6 @@ public class FindCommand implements Command {
      */
     @Override
     public CommandResult onRun(Ui ui, TaskManager storage, TaskList tasks, String raw) throws CarlException {
-        return CommandResult.success(ui.showTaskList(tasks.findTask(keyword)));
+        return CommandResult.createSuccess(ui.showTaskList(tasks.findTask(keyword)));
     }
 }

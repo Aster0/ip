@@ -14,7 +14,7 @@ public class UnmarkCommand extends TargetedTaskCommand {
     /**
      * Constructs a command that reopens the task at the specified one-based index.
      *
-     * @param index one-based task index
+     * @param index one-based task index.
      */
     public UnmarkCommand(int index) {
         super(index);
@@ -28,13 +28,13 @@ public class UnmarkCommand extends TargetedTaskCommand {
      * @param storage Task manager handling task data persistence.
      * @param tasks   List of current tasks.
      * @param raw     Raw input string entered by the user.
-     * @return result describing the reopened task
+     * @return result describing the reopened task.
      * @throws CarlException If the task index is missing, invalid, or the task is already not done.
      */
     @Override
     public CommandResult execute(Ui ui, TaskManager storage, TaskList tasks, String raw) throws CarlException {
         Task task = tasks.markTaskAsUndone(index - 1);
 
-        return CommandResult.success(ui.showUnMarkTask(task));
+        return CommandResult.createSuccess(ui.showUnmarkTask(task));
     }
 }

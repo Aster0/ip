@@ -65,7 +65,7 @@ public class TaskList implements Comparator<Task> {
     /**
      * Captures task order and completion states so a failed save can be rolled back safely.
      *
-     * @return an opaque snapshot of the current list state
+     * @return an opaque snapshot of the current list state.
      */
     public Snapshot createSnapshot() {
         List<Task> taskCopies = new ArrayList<>(tasks);
@@ -76,7 +76,7 @@ public class TaskList implements Comparator<Task> {
     /**
      * Restores a snapshot after a task-changing command fails.
      *
-     * @param snapshot previously captured list state
+     * @param snapshot previously captured list state.
      */
     public void restore(Snapshot snapshot) {
         tasks = new ArrayList<>(snapshot.tasks);
@@ -124,7 +124,7 @@ public class TaskList implements Comparator<Task> {
     /**
      * Returns tasks ordered alphabetically by description without changing saved order.
      *
-     * @return a sorted copy of the task list
+     * @return a sorted copy of the task list.
      */
     public List<Task> getSortedTasks() {
         List<Task> tasks = new ArrayList<>(this.tasks);
@@ -155,7 +155,7 @@ public class TaskList implements Comparator<Task> {
         }
 
         Task task = tasks.get(index);
-        if (!task.markAsDone()) {
+        if (!task.tryMarkAsDone()) {
             throw new CarlCommandException("That task is already completed.");
         }
         return task;
@@ -201,7 +201,7 @@ public class TaskList implements Comparator<Task> {
 
         Task task = tasks.get(index);
 
-        if (!task.unMarkAsDone()) {
+        if (!task.tryUnmarkAsDone()) {
 
             throw new CarlCommandException("That task is already incomplete.");
         }

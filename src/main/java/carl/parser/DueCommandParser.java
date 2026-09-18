@@ -9,7 +9,7 @@ import carl.exceptions.CarlException;
 import carl.util.DateParser;
 
 /**
- * Parses input arguments and creates a new DeadlineCommand object.
+ * Parses input arguments and creates a new DueCommand object.
  */
 public class DueCommandParser implements Parser<DueCommand> {
 

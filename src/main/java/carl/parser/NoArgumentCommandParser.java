@@ -8,7 +8,7 @@ import carl.exceptions.CarlCommandException;
 /**
  * Parses a command that does not accept any arguments.
  *
- * @param <T> command type produced by this parser
+ * @param <T> command type produced by this parser.
  */
 public class NoArgumentCommandParser<T extends Command> implements Parser<T> {
     private final String commandWord;
@@ -17,8 +17,8 @@ public class NoArgumentCommandParser<T extends Command> implements Parser<T> {
     /**
      * Creates a parser for an argument-free command.
      *
-     * @param commandWord command name shown in validation errors
-     * @param commandSupplier factory for the parsed command
+     * @param commandWord command name shown in validation errors.
+     * @param commandSupplier factory for the parsed command.
      */
     public NoArgumentCommandParser(String commandWord, Supplier<T> commandSupplier) {
         this.commandWord = commandWord;

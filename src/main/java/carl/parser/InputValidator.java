@@ -14,9 +14,9 @@ public final class InputValidator {
     /**
      * Validates and normalizes a task description.
      *
-     * @param input raw description entered by the user
-     * @param usage command format to display when the description is empty
-     * @return a trimmed description with repeated whitespace collapsed
+     * @param input raw description entered by the user.
+     * @param usage command format to display when the description is empty.
+     * @return a trimmed description with repeated whitespace collapsed.
      * @throws CarlCommandException If the description is empty, too long, or unsafe for storage.
      */
     public static String normalizeTaskName(String input, String usage) throws CarlCommandException {

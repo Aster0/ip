@@ -18,7 +18,7 @@ import javafx.application.Application;
 public class Carl {
     /** Name displayed in the window title and application header. */
     public static final String BOT_NAME = "Carl · Night-Shift Dispatcher";
-    private TaskManager taskManager;
+    private final TaskManager taskManager;
     private TaskList tasks;
     private Ui ui;
     private CarlParser parser;
@@ -69,9 +69,10 @@ public class Carl {
             return command.onRun(ui, taskManager, tasks, input);
 
         } catch (CarlException e) {
-            return CommandResult.error(e.getMessage());
+            return CommandResult.createError(e.getMessage());
         } catch (RuntimeException e) {
-            return CommandResult.error("An unexpected error occurred. The command could not be completed safely.");
+            return CommandResult.createError(
+                    "An unexpected error occurred. The command could not be completed safely.");
         }
     }
 

@@ -38,6 +38,6 @@ public class TodoCommand extends AddTaskCommand {
         Task task = new Todo(name);
         tasks.addTaskToList(task);
 
-        return CommandResult.success(ui.showAddTask(task, tasks.getTasksLeft()));
+        return CommandResult.createSuccess(ui.showAddTask(task, tasks.getTasksLeft()));
     }
 }

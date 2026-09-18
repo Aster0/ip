@@ -22,6 +22,6 @@ public class ListCommand implements Command {
      */
     @Override
     public CommandResult onRun(Ui ui, TaskManager storage, TaskList tasks, String raw) {
-        return CommandResult.success(ui.showTaskList(tasks.getAllTasks()));
+        return CommandResult.createSuccess(ui.showTaskList(tasks.getAllTasks()));
     }
 }

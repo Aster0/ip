@@ -15,7 +15,7 @@ import carl.ui.Ui;
 public class DeadlineCommand extends AddTaskCommand {
 
     /** Due date and time of the deadline task. */
-    private LocalDateTime by;
+    private final LocalDateTime by;
 
     /**
      * Constructs a {@code DeadlineCommand} with the specified task name and due date.
@@ -48,7 +48,7 @@ public class DeadlineCommand extends AddTaskCommand {
         tasks.addTaskToList(task);
 
 
-        return CommandResult.success(ui.showAddTask(task, tasks.getTasksLeft()));
+        return CommandResult.createSuccess(ui.showAddTask(task, tasks.getTasksLeft()));
 
     }
 }

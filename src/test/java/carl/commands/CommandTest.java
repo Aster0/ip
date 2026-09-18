@@ -121,9 +121,9 @@ public class CommandTest {
 
     @Test
     public void commandResultFactories_setCorrectFlags() {
-        CommandResult success = CommandResult.success("ok");
-        CommandResult exit = CommandResult.exit("bye");
-        CommandResult error = CommandResult.error("bad");
+        CommandResult success = CommandResult.createSuccess("ok");
+        CommandResult exit = CommandResult.createExit("bye");
+        CommandResult error = CommandResult.createError("bad");
 
         assertEquals(new CommandResult("ok", false, false), success);
         assertEquals(new CommandResult("bye", true, false), exit);

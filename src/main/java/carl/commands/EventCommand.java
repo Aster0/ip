@@ -14,8 +14,8 @@ import carl.ui.Ui;
  */
 public class EventCommand extends AddTaskCommand {
 
-    private LocalDateTime from;
-    private LocalDateTime to;
+    private final LocalDateTime from;
+    private final LocalDateTime to;
 
     /**
      * Constructs an {@code EventCommand} with the specified task name, start date, and end date.
@@ -45,7 +45,7 @@ public class EventCommand extends AddTaskCommand {
     public CommandResult execute(Ui ui, TaskManager storage, TaskList tasks, String raw) throws CarlException {
         String response = addTask(name, from, to, tasks, ui);
 
-        return CommandResult.success(response);
+        return CommandResult.createSuccess(response);
 
     }
 

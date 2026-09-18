@@ -46,10 +46,10 @@ public class Ui {
      */
     public String showAddTask(Task task, int count) {
         return buildMessage("Logged. I’ll keep that on the radar.",
-                "  " + task, tasksLeft(count));
+                "  " + task, showTasksLeft(count));
     }
 
-    private String tasksLeft(int count) {
+    private String showTasksLeft(int count) {
         return "Now you have " + count + " tasks in the list.";
     }
 
@@ -69,7 +69,7 @@ public class Ui {
      * @param task The task that was unmarked.
      * @return confirmation containing the reopened task
      */
-    public String showUnMarkTask(Task task) {
+    public String showUnmarkTask(Task task) {
         return "Successfully unmarked this task as not done! \n  " + task;
     }
 
@@ -81,7 +81,7 @@ public class Ui {
      * @return confirmation containing the deleted task and remaining count
      */
     public String showDeleteTask(Task task, int count) {
-        return "Successfully removed this task! \n  " + task + "\n" + tasksLeft(count);
+        return "Successfully removed this task! \n  " + task + "\n" + showTasksLeft(count);
     }
 
     /**

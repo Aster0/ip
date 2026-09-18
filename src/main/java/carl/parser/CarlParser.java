@@ -40,7 +40,7 @@ public class CarlParser {
     }
 
     /**
-     * Parses the raw user input and executes the mapped command.
+     * Parses the raw user input and returns the mapped command.
      *
      * @param input       The full string input typed by the user.
      * @return The parsed Command object.

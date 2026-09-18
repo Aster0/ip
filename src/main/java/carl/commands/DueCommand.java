@@ -15,7 +15,7 @@ public class DueCommand implements Command {
     /**
      * Creates a command that lists tasks occurring on the specified date.
      *
-     * @param date date to query
+     * @param date date to query.
      */
     public DueCommand(LocalDate date) {
         this.date = date;
@@ -29,11 +29,11 @@ public class DueCommand implements Command {
      * @param storage Task manager handling task data persistence.
      * @param tasks   List of current tasks.
      * @param raw     Raw input string entered by the user.
-     * @return result containing tasks occurring on the requested date
+     * @return result containing tasks occurring on the requested date.
      * @throws CarlException If the provided date format is invalid.
      */
     @Override
     public CommandResult onRun(Ui ui, TaskManager storage, TaskList tasks, String raw) throws CarlException {
-        return CommandResult.success(ui.showTaskList(tasks.getTasksDueOn(date)));
+        return CommandResult.createSuccess(ui.showTaskList(tasks.getTasksDueOn(date)));
     }
 }

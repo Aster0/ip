@@ -54,7 +54,7 @@ public class Task {
      *
      * @return true if the task was successfully marked as done, false if it was already done.
      */
-    public boolean markAsDone() {
+    public boolean tryMarkAsDone() {
         if (this.status == TaskStatus.DONE) {
             return false;
         }
@@ -68,7 +68,7 @@ public class Task {
      *
      * @return true if the task was successfully marked as not done, false if it was already not done.
      */
-    public boolean unMarkAsDone() {
+    public boolean tryUnmarkAsDone() {
         if (this.status == TaskStatus.NOT_DONE) {
             return false;
         }
@@ -87,12 +87,12 @@ public class Task {
     }
 
     /**
-     * Factory method to create a specific Task instance based on provided TaskData.
+     * Create a specific Task instance based on provided TaskData.
      *
      * @param data The data object containing task details.
      * @return A specific Task object (Todo, Event, or Deadline).
      */
-    public static Task of(TaskData data) {
+    public static Task createFromData(TaskData data) {
         return switch (data.type) {
             case TODO -> new Todo(data.name, data.status);
             case EVENT -> new Event(data.name, data.status, data.from, data.to);
@@ -113,8 +113,8 @@ public class Task {
     /**
      * Checks whether another task contains the same user-defined details, ignoring completion status.
      *
-     * @param other task to compare against
-     * @return true when the tasks represent the same task details
+     * @param other task to compare against.
+     * @return true when the tasks represent the same task details.
      */
     public boolean hasSameDetails(Task other) {
         return other != null && getIdentity().equals(other.getIdentity());
@@ -123,7 +123,7 @@ public class Task {
     /**
      * Returns a normalized identity used to detect duplicate task details.
      *
-     * @return normalized task identity
+     * @return normalized task identity.
      */
     protected String getIdentity() {
         return type + "|" + name.toLowerCase(Locale.ROOT);
@@ -154,11 +154,11 @@ public class Task {
      * A Data Transfer Object used for parsing and instantiating specific Task types.
      */
     public static class TaskData {
-        private TaskType type;
-        private String name;
-        private TaskStatus status;
-        private LocalDateTime from;
-        private LocalDateTime to;
+        private final TaskType type;
+        private final String name;
+        private final TaskStatus status;
+        private final LocalDateTime from;
+        private final LocalDateTime to;
 
         /**
          * Constructs a TaskData object with all necessary fields for any task type.

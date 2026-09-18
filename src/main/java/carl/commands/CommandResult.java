@@ -21,7 +21,7 @@ public record CommandResult(
      * @param message The feedback message to display to the user.
      * @return A {@code CommandResult} indicating successful execution.
      */
-    public static CommandResult success(String message) {
+    public static CommandResult createSuccess(String message) {
         return new CommandResult(message, false, false);
     }
 
@@ -31,7 +31,7 @@ public record CommandResult(
      * @param message The exit message to display to the user.
      * @return A {@code CommandResult} with the exit flag set to true.
      */
-    public static CommandResult exit(String message) {
+    public static CommandResult createExit(String message) {
         return new CommandResult(message, true, false);
     }
 
@@ -41,7 +41,7 @@ public record CommandResult(
      * @param message The error message to display to the user.
      * @return A {@code CommandResult} with the error flag set to true.
      */
-    public static CommandResult error(String message) {
+    public static CommandResult createError(String message) {
         return new CommandResult(message, false, true);
     }
 

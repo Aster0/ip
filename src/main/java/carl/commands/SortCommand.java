@@ -11,6 +11,6 @@ import carl.ui.Ui;
 public class SortCommand implements Command {
     @Override
     public CommandResult onRun(Ui ui, TaskManager storage, TaskList tasks, String raw) throws CarlException {
-        return CommandResult.success(ui.showTaskList(tasks.getSortedTasks()));
+        return CommandResult.createSuccess(ui.showTaskList(tasks.getSortedTasks()));
     }
 }

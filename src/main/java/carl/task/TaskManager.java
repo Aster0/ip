@@ -33,7 +33,7 @@ public class TaskManager {
     /**
      * Creates a task manager using a specific path, primarily for isolated testing.
      *
-     * @param saveFilePath path of the task save file
+     * @param saveFilePath path of the task save file.
      */
     public TaskManager(Path saveFilePath) {
         this.saveFilePath = Objects.requireNonNull(saveFilePath);
@@ -42,7 +42,7 @@ public class TaskManager {
     /**
      * Loads valid saved tasks and skips malformed or duplicate entries.
      *
-     * @return valid tasks loaded from the file
+     * @return valid tasks loaded from the file.
      */
     public List<Task> loadSave() {
         List<Task> tasks = new ArrayList<>();
@@ -102,7 +102,7 @@ public class TaskManager {
     /** Converts one validated save-file line into a task. */
     private Task parseStringToTask(String line) {
         String[] fields = splitSavedFields(line);
-        TaskType type = TaskType.of(fields[0].strip());
+        TaskType type = TaskType.parsePrefix(fields[0].strip());
         validateFieldCount(type, fields);
 
         TaskStatus status = parseTaskStatus(fields[1]);
@@ -176,13 +176,13 @@ public class TaskManager {
     /** Passes validated values to the task factory. */
     private Task buildTask(TaskType type, TaskStatus status, String name,
                            LocalDateTime from, LocalDateTime to) {
-        return Task.of(new Task.TaskData(type, status, name, from, to));
+        return Task.createFromData(new Task.TaskData(type, status, name, from, to));
     }
 
     /**
      * Saves all tasks using a temporary file so an interrupted write cannot corrupt existing data.
      *
-     * @param tasks task list to save
+     * @param tasks task list to save.
      * @throws CarlStorageException If the destination cannot be written.
      */
     public void saveAll(TaskList tasks) throws CarlStorageException {
@@ -231,7 +231,7 @@ public class TaskManager {
     /**
      * Creates the save file when missing, then loads its valid contents.
      *
-     * @return loaded tasks, or an empty list when the save file cannot be accessed
+     * @return loaded tasks, or an empty list when the save file cannot be accessed.
      */
     public List<Task> createSave() {
         startupWarning = null;
@@ -255,7 +255,7 @@ public class TaskManager {
     /**
      * Returns a recoverable loading warning to show after startup.
      *
-     * @return warning text, or {@code null} when storage loaded normally
+     * @return warning text, or {@code null} when storage loaded normally.
      */
     public String getStartupWarning() {
         return startupWarning;

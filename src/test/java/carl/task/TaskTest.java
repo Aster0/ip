@@ -25,23 +25,23 @@ public class TaskTest {
 
     @Test
     public void taskType_prefixes_roundTripAndRejectUnknownValues() {
-        assertEquals(TaskType.TODO, TaskType.of("T"));
-        assertEquals(TaskType.DEADLINE, TaskType.of("D"));
-        assertEquals(TaskType.EVENT, TaskType.of("E"));
+        assertEquals(TaskType.TODO, TaskType.parsePrefix("T"));
+        assertEquals(TaskType.DEADLINE, TaskType.parsePrefix("D"));
+        assertEquals(TaskType.EVENT, TaskType.parsePrefix("E"));
         assertEquals("T", TaskType.TODO.toString());
-        assertThrows(IllegalArgumentException.class, () -> TaskType.of("X"));
-        assertThrows(IllegalArgumentException.class, () -> TaskType.of(null));
+        assertThrows(IllegalArgumentException.class, () -> TaskType.parsePrefix("X"));
+        assertThrows(IllegalArgumentException.class, () -> TaskType.parsePrefix(null));
     }
 
     @Test
     public void task_completionTransitions_returnWhetherStateChanged() {
         Task task = new Todo("buy milk");
 
-        assertTrue(task.markAsDone());
-        assertFalse(task.markAsDone());
+        assertTrue(task.tryMarkAsDone());
+        assertFalse(task.tryMarkAsDone());
         assertEquals("[T][X] buy milk", task.toString());
-        assertTrue(task.unMarkAsDone());
-        assertFalse(task.unMarkAsDone());
+        assertTrue(task.tryUnmarkAsDone());
+        assertFalse(task.tryUnmarkAsDone());
         assertEquals("[T][ ] buy milk", task.toString());
     }
 
@@ -61,11 +61,11 @@ public class TaskTest {
 
     @Test
     public void taskFactory_allTaskTypes_constructsCorrectSubclasses() {
-        Task todo = Task.of(new Task.TaskData(TaskType.TODO, TaskStatus.NOT_DONE,
+        Task todo = Task.createFromData(new Task.TaskData(TaskType.TODO, TaskStatus.NOT_DONE,
                 "todo", null, null));
-        Task deadline = Task.of(new Task.TaskData(TaskType.DEADLINE, TaskStatus.DONE,
+        Task deadline = Task.createFromData(new Task.TaskData(TaskType.DEADLINE, TaskStatus.DONE,
                 "deadline", START, null));
-        Task event = Task.of(new Task.TaskData(TaskType.EVENT, TaskStatus.NOT_DONE,
+        Task event = Task.createFromData(new Task.TaskData(TaskType.EVENT, TaskStatus.NOT_DONE,
                 "event", START, END));
 
         assertInstanceOf(Todo.class, todo);

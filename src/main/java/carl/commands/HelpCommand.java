@@ -25,14 +25,14 @@ public class HelpCommand implements Command {
     /**
      * Returns the command reference without changing any task data.
      *
-     * @param ui user interface for interacting with the user
-     * @param storage task manager handling task data persistence
-     * @param tasks list of current tasks
-     * @param raw raw input string entered by the user
-     * @return a successful result containing the command reference
+     * @param ui user interface for interacting with the user.
+     * @param storage task manager handling task data persistence.
+     * @param tasks list of current tasks.
+     * @param raw raw input string entered by the user.
+     * @return a successful result containing the command reference.
      */
     @Override
     public CommandResult onRun(Ui ui, TaskManager storage, TaskList tasks, String raw) {
-        return CommandResult.success(HELP_MESSAGE);
+        return CommandResult.createSuccess(HELP_MESSAGE);
     }
 }
