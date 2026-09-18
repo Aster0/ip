@@ -105,8 +105,6 @@ public class CommandTest {
         assertTrue(help.message().contains("`deadline`"));
         assertFalse(help.isExited());
         assertTrue(bye.isExited());
-        assertTrue(byeCommand.isExited());
-        assertFalse(new ListCommand().isExited());
     }
 
     @Test

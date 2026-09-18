@@ -22,7 +22,7 @@ public class Ui {
     /**
      * Displays the welcome message to the user.
      *
-     * @return Carl's welcome message
+     * @return Carl's welcome message.
      */
     public String showWelcome() {
         return "Carl online. What are we getting done?";
@@ -31,7 +31,7 @@ public class Ui {
     /**
      * Displays the goodbye message.
      *
-     * @return Carl's goodbye message
+     * @return Carl's goodbye message.
      */
     public String showGoodbye() {
         return "Shift complete. See you next time.";
@@ -42,7 +42,7 @@ public class Ui {
      *
      * @param task  The task that was added.
      * @param count The total number of tasks in the list.
-     * @return confirmation containing the task and updated count
+     * @return confirmation containing the task and updated count.
      */
     public String showAddTask(Task task, int count) {
         return buildMessage("Logged. I’ll keep that on the radar.",
@@ -57,7 +57,7 @@ public class Ui {
      * Displays a message confirming a task has been marked as done.
      *
      * @param task The task that was marked as done.
-     * @return confirmation containing the completed task
+     * @return confirmation containing the completed task.
      */
     public String showMarkTaskAsDone(Task task) {
         return "Checked off. One less thing to worry about.\n  " + task;
@@ -67,7 +67,7 @@ public class Ui {
      * Displays a message confirming a task has been unmarked.
      *
      * @param task The task that was unmarked.
-     * @return confirmation containing the reopened task
+     * @return confirmation containing the reopened task.
      */
     public String showUnmarkTask(Task task) {
         return "Successfully unmarked this task as not done! \n  " + task;
@@ -78,7 +78,7 @@ public class Ui {
      *
      * @param task  The task that was deleted.
      * @param count The remaining number of tasks in the list.
-     * @return confirmation containing the deleted task and remaining count
+     * @return confirmation containing the deleted task and remaining count.
      */
     public String showDeleteTask(Task task, int count) {
         return "Successfully removed this task! \n  " + task + "\n" + showTasksLeft(count);
@@ -88,7 +88,7 @@ public class Ui {
      * Displays the list of tasks to the user.
      *
      * @param tasks The list of tasks to display.
-     * @return numbered task list or the empty-list message
+     * @return numbered task list or the empty-list message.
      */
     public String showTaskList(List<Task> tasks) {
         if (tasks.isEmpty()) {

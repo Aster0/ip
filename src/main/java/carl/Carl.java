@@ -46,7 +46,7 @@ public class Carl {
     /**
      * Generates the welcome message for the user interface.
      *
-     * @return Carl's welcome message
+     * @return Carl's welcome message.
      */
     public String getWelcomeMessage() {
         return ui.showWelcome();
@@ -89,7 +89,7 @@ public class Carl {
     /**
      * Returns a recoverable warning encountered while loading task storage.
      *
-     * @return warning text, or {@code null} when startup completed normally
+     * @return warning text, or {@code null} when startup completed normally.
      */
     public String getStartupWarning() {
         return startupWarning;

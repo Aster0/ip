@@ -16,18 +16,10 @@ public interface Command {
      * @param storage Task manager handling task data persistence.
      * @param tasks   List of current tasks.
      * @param raw     Raw input string entered by the user.
-     * @return result containing the message and application state after execution
+     * @return result containing the message and application state after execution.
      * @throws CarlException If an error occurs during command execution.
      */
     CommandResult onRun(Ui ui, TaskManager storage, TaskList tasks,
                         String raw) throws CarlException;
-    /**
-     * Returns whether this command signals the application to terminate.
-     * Defaults to false.
-     *
-     * @return True if the application should terminate, false otherwise.
-     */
-    default boolean isExited() {
-        return false;
-    }
+
 }

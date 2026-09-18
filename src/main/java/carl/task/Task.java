@@ -87,7 +87,7 @@ public class Task {
     }
 
     /**
-     * Create a specific Task instance based on provided TaskData.
+     * Creates a specific Task instance based on provided TaskData.
      *
      * @param data The data object containing task details.
      * @return A specific Task object (Todo, Event, or Deadline).

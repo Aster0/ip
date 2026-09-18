@@ -30,7 +30,7 @@ public class TodoCommand extends AddTaskCommand {
      * @param storage Task manager handling task data persistence.
      * @param tasks   List of current tasks.
      * @param raw     Raw input string entered by the user.
-     * @return result describing the added todo and updated task count
+     * @return result describing the added todo and updated task count.
      * @throws CarlException If an error occurs during execution.
      */
     @Override
